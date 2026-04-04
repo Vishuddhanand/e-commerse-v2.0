@@ -1,0 +1,138 @@
+/* ===== TESTIMONIALS SECTION ===== */
+.testimonials {
+  background: #f8fafc;
+  padding: 5rem 0; /* Padding top/bottom. Edges flush to allow infinite scroll visually */
+  overflow: hidden;
+}
+
+.testimonials .section-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.testimonials .section-header h2 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: #1e293b;
+  font-weight: 800;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.5px;
+}
+
+.testimonials .header-underline {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff9800, #ffcc66);
+  margin: 0 auto;
+  border-radius: 4px;
+}
+
+/* Marquee Container */
+.testimonial-marquee {
+  position: relative;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Fading edges for marquee */
+.testimonial-marquee::before,
+.testimonial-marquee::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 100px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+.testimonial-marquee::before {
+  left: 0;
+  background: linear-gradient(to right, #f8fafc, transparent);
+}
+.testimonial-marquee::after {
+  right: 0;
+  background: linear-gradient(to left, #f8fafc, transparent);
+}
+
+/* Track Loop */
+.testimonial-track {
+  display: flex;
+  gap: 2.5rem; /* The gap is maintained universally */
+  padding: 1.5rem; /* Space allowing the shadow hover effect */
+  animation: scroll-left 35s linear infinite;
+  width: max-content;
+}
+
+/* Pause the animation upon interaction */
+.testimonial-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  /* Because the JSX array is precisely duplicated once, 50% translates perfectly back to frame 0 flawlessly! */
+  100% { transform: translateX(calc(-50% - 1.25rem)); } 
+}
+
+/* Card Styling */
+.testimonial-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  width: 380px; 
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border-color: rgba(255, 152, 0, 0.3);
+}
+
+.testimonial-img {
+  width: 85px;
+  height: 85px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 10px rgba(255,152,0,0.3);
+  border: 3px solid #ffffff;
+}
+
+.testimonial-rating {
+  color: #ff9800;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.1em;
+}
+
+.testimonial-card p {
+  color: #475569;
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.testimonial-card span {
+  color: #1e293b;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive constraints */
+@media (max-width: 640px) {
+  .testimonial-card {
+    width: 300px;
+    padding: 2rem 1.5rem;
+  }
+}

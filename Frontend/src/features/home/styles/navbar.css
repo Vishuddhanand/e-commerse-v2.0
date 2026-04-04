@@ -1,0 +1,212 @@
+/* Modern CSS Reset/Normalization for Navbar scope */
+:root {
+  --nav-bg: rgba(35, 39, 45, 0.95); /* #23272d equivalent for glassmorphism */
+  --nav-border: rgba(255, 255, 255, 0.1);
+  --nav-text: #fff;
+  --nav-text-hover: #ff9800;
+  --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  --primary-btn: #ff9800;
+  --primary-btn-hover: #f57c00;
+  --danger-btn: #ef4444;
+  --danger-btn-hover: #dc2626;
+  --transition-speed: 0.3s;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 4rem;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--nav-border);
+  box-shadow: var(--nav-shadow);
+  font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  transition: all var(--transition-speed) ease;
+}
+
+/* LEFT SECTION - LOGO */
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: opacity var(--transition-speed) ease;
+}
+
+.brand-logo:hover {
+  opacity: 0.8;
+}
+
+.brand-icon {
+  width: 140px;
+  height: 50px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+/* MIDDLE SECTION - NAVIGATION LINKS */
+.nav-middle {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-link {
+  color: var(--nav-text);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  position: relative;
+  padding: 0.5rem 0;
+  transition: color var(--transition-speed) ease;
+}
+
+.nav-link:hover {
+  color: var(--nav-text-hover);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--nav-text-hover);
+  transition: width var(--transition-speed) ease;
+  border-radius: 2px;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* RIGHT SECTION - ACTIONS */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.btn-login {
+  background-color: transparent;
+  color: var(--primary-btn);
+  border: 2px solid var(--primary-btn);
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-login:hover {
+  background-color: var(--primary-btn);
+  color: white;
+  box-shadow: 0 4px 14px rgba(255, 152, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.profile-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.profile-icon:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.cart-icon {
+  font-size: 1.25rem;
+  text-decoration: none;
+  color: var(--nav-text);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  transition: all var(--transition-speed) ease;
+}
+
+.cart-icon:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
+}
+
+.btn-logout {
+  background-color: transparent;
+  color: var(--danger-btn);
+  border: 1px solid var(--danger-btn);
+  padding: 0.5rem 1.25rem;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+.btn-logout:hover {
+  background-color: var(--danger-btn-hover);
+  color: white;
+  border-color: var(--danger-btn-hover);
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+  transform: translateY(-1px);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 900px) {
+  .navbar {
+    padding: 1rem 2rem;
+  }
+  
+  .nav-middle {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-middle {
+    display: none; /* Mobile menu should be implemented here */
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    padding: 1rem;
+  }
+  
+  .nav-right {
+    gap: 0.75rem;
+  }
+  
+  .brand-logo span {
+    display: none;
+  }
+}

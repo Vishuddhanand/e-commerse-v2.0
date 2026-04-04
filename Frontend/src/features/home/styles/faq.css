@@ -1,0 +1,149 @@
+/* ===== FAQ SECTION ===== */
+.faq {
+  padding: 5rem 2rem;
+  background: #f8fafc;
+}
+
+.faq .section-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.faq .section-header h2 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: #1e293b;
+  font-weight: 800;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.5px;
+}
+
+.faq .header-underline {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff9800, #ffcc66);
+  margin: 0 auto;
+  border-radius: 4px;
+}
+
+.faq-container {
+  max-width: 850px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* FAQ Item */
+.faq-item {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  border-color: rgba(255, 152, 0, 0.4);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+.faq-item.active {
+  border-color: #ff9800;
+  box-shadow: 0 10px 20px -5px rgba(255, 152, 0, 0.15);
+}
+
+/* Question Header */
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: #ffffff;
+  transition: background 0.3s ease;
+}
+
+.faq-item.active .faq-question {
+  background: #fff8eb;
+}
+
+.faq-question h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #334155;
+  margin: 0;
+  padding-right: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.faq-item.active .faq-question h3 {
+  color: #ea580c; /* Deep orange active text */
+}
+
+/* Plus / Minus Icon */
+.faq-icon {
+  font-size: 2rem;
+  font-weight: 300;
+  color: #ff9800;
+  line-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* CSS Grid Height Animation */
+/* Utilizing grid-template-rows 0 to 1 allows height expansion without rigid JavaScript calculations! */
+.faq-answer-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #fff8eb;
+}
+
+.faq-item.active .faq-answer-wrapper {
+  grid-template-rows: 1fr;
+}
+
+.faq-answer {
+  overflow: hidden;
+}
+
+.faq-answer p {
+  padding: 0 2rem 1.5rem 2rem;
+  color: #475569;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.faq-item.active .faq-answer p {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.15s; /* Delay fade in text gently after the grid begins expanding */
+}
+
+/* Responsive constraints */
+@media (max-width: 640px) {
+  .faq {
+    padding: 4rem 1rem;
+  }
+  
+  .faq-question {
+    padding: 1.25rem 1.5rem;
+  }
+  
+  .faq-question h3 {
+    font-size: 1.1rem;
+  }
+  
+  .faq-answer p {
+    padding: 0 1.5rem 1.25rem 1.5rem;
+  }
+}

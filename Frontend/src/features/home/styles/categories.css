@@ -1,0 +1,109 @@
+/* ===== CATEGORIES SECTION ===== */
+.categories {
+  background: #ffffff;
+  padding: 5rem 2rem;
+}
+
+.categories .section-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.categories .section-header h2 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: #1e293b;
+  font-weight: 800;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.5px;
+}
+
+.categories .header-underline {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff9800, #ffcc66);
+  margin: 0 auto;
+  border-radius: 4px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 2.5rem 1.5rem;
+  text-decoration: none;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  font-weight: 600;
+  color: #334155;
+  font-size: 1.15rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Hover Sweep Background */
+.category-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, #ff9800, #ffcc66);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  color: #ffffff;
+  box-shadow: 0 10px 15px -3px rgba(255, 152, 0, 0.3), 0 4px 6px -2px rgba(255, 152, 0, 0.15);
+  border-color: transparent;
+}
+
+.category-card:hover::before {
+  opacity: 1;
+}
+
+/* Card Icons */
+.icon-wrapper {
+  background: #ffffff;
+  color: #ff9800;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.icon-wrapper svg {
+  width: 30px;
+  height: 30px;
+}
+
+.category-card:hover .icon-wrapper {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255,255,255,0.3);
+}
+
+@media (max-width: 640px) {
+  .categories {
+    padding: 3rem 1rem;
+  }
+}

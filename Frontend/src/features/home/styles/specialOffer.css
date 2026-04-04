@@ -1,0 +1,201 @@
+/* ===== SPECIAL OFFER SECTION ===== */
+.special {
+  background: #fff8eb;
+  padding: 5rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.special .section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  position: relative;
+  z-index: 2;
+}
+
+.special .section-header h2 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: #1e293b;
+  font-weight: 800;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.5px;
+}
+
+.special .header-underline {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff9800, #ffcc66);
+  margin: 0 auto;
+  border-radius: 4px;
+}
+
+.special-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* Premium Card Layout */
+.special-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 3.5rem;
+  gap: 4rem;
+  box-shadow: 0 20px 40px -10px rgba(255, 152, 0, 0.15), 0 10px 20px -5px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 152, 0, 0.2);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden; /* Important for containing the badge */
+}
+
+.special-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px -12px rgba(255, 152, 0, 0.25), 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+}
+
+/* Badge Overlay */
+.special-badge {
+  position: absolute;
+  top: 2rem;
+  right: -2.5rem;
+  background: #ef4444; /* Alert red */
+  color: white;
+  padding: 0.5rem 3.5rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transform: rotate(45deg);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+
+/* Image Wrapper */
+.special-img-wrapper {
+  flex: 1;
+  max-width: 350px;
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.special-img-wrapper::before {
+  content: '';
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 152, 0, 0.15) 0%, transparent 65%);
+  animation: pulseBg 3s infinite alternate;
+}
+
+.special-img {
+  width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  z-index: 2;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.special-card:hover .special-img {
+  transform: scale(1.12) rotate(-3deg);
+}
+
+/* Info Section */
+.special-info {
+  flex: 1.5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.special-info h3 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: #1e293b;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  line-height: 1.25;
+}
+
+.special-info p {
+  font-size: 1.15rem;
+  color: #475569;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+.special-btn {
+  padding: 1.1rem 3rem;
+  font-size: 1.15rem;
+}
+
+/* Decorative Background Blobs */
+.special::before, .special::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.special::before {
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 152, 0, 0.2);
+  top: -100px;
+  left: -100px;
+}
+
+.special::after {
+  width: 400px;
+  height: 400px;
+  background: rgba(255, 204, 102, 0.2);
+  bottom: -150px;
+  right: -150px;
+}
+
+/* Animations */
+@keyframes pulseBg {
+  0% { transform: scale(0.9); opacity: 0.5; }
+  100% { transform: scale(1.1); opacity: 1; }
+}
+
+/* Responsive Tweaks */
+@media (max-width: 900px) {
+  .special-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    gap: 2rem;
+  }
+
+  .special-info {
+    align-items: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .special {
+    padding: 4rem 1rem;
+  }
+  
+  .special-badge {
+    top: 1.5rem;
+    right: -3rem;
+    padding: 0.4rem 3rem;
+    font-size: 0.8rem;
+  }
+}
