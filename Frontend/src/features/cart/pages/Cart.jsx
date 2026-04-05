@@ -1,45 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/cart.css'; 
-
-const initialCart = [
-  {
-    productId: 1,
-    name: "Premium Kashmiri Saffron (1g)",
-    price: 450,
-    quantity: 1,
-    image: "https://images.unsplash.com/photo-1596647413661-bc935da66f07?auto=format&fit=crop&q=80&w=200",
-    category: "Pooja Essentials"
-  },
-  {
-    productId: 2,
-    name: "Sandalwood Incense Sticks",
-    price: 150,
-    quantity: 2,
-    image: "https://images.unsplash.com/photo-1603517173367-a006c64606ff?auto=format&fit=crop&q=80&w=200",
-    category: "Aromatherapy"
-  },
-  {
-    productId: 3,
-    name: "Pure Cow Ghee (500ml)",
-    price: 650,
-    quantity: 1,
-    image: "https://images.unsplash.com/photo-1627485937980-221c88ce04ea?auto=format&fit=crop&q=80&w=200",
-    category: "Daily Essentials"
-  }
-];
+import { getCart, removeFromCart, addToCart, clearCart } from '../services/cart.api';
+import products from '../../../data/product';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../auth/hooks/useAuth';
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState(initialCart);
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-  const updateQuantity = (productId, newQuantity) => {
-    if (newQuantity < 1) return;
-    setCartItems(cartItems.map(item => 
-      item.productId === productId ? { ...item, quantity: newQuantity } : item
-    ));
+  const fetchCartItems = async () => {
+    try {
+      setLoading(true);
+      const data = await getCart();
+      
+      // Map images from product data
+      const itemsWithImages = data.items.map(item => {
+        const productDetail = products.find(p => p.id === String(item.productId));
+        return {
+          ...item,
+          image: productDetail?.img || 'https://images.unsplash.com/photo-1596647413661-bc935da66f07?auto=format&fit=crop&q=80&w=200',
+          category: productDetail?.category || 'General'
+        };
+      });
+
+      setCartItems(itemsWithImages);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to load cart");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const removeItem = (productId) => {
-    setCartItems(cartItems.filter(item => item.productId !== productId));
+  useEffect(() => {
+    if (user) {
+      fetchCartItems();
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
+
+  const handleUpdateQuantity = async (productId, currentQty, delta) => {
+    if (currentQty + delta < 1) return;
+    
+    try {
+      if (delta > 0) {
+        // Add one more
+        const item = cartItems.find(i => i.productId === productId);
+        await addToCart({ productId, name: item.name, price: item.price });
+      } else {
+        // Decrement is trickier with the current backend (as it only has add and remove)
+        // I'll show a toast saying they can remove it entirely
+        toast.error("Decrement not supported in this version. Use 'Remove' to delete.");
+        return;
+      }
+      await fetchCartItems();
+    } catch (err) {
+      toast.error("Update failed");
+    }
+  };
+
+  const handleRemoveItem = async (productId) => {
+    try {
+      await removeFromCart(productId);
+      toast.success("Item removed from cart");
+      await fetchCartItems();
+    } catch (err) {
+      toast.error("Remove failed");
+    }
   };
 
   const handleSinglePurchase = (item) => {
@@ -49,6 +81,21 @@ const Cart = () => {
   const handleCheckout = () => {
     alert('Proceeding to Checkout with all items!');
   };
+
+  if (!user && !loading) {
+      return (
+          <div className="cart-page-wrapper">
+              <div className="cart-container" style={{ textAlign: 'center', padding: '100px 20px' }}>
+                  <h2>Please log in to view your cart</h2>
+                  <button className="btn-primary" style={{marginTop: '20px'}} onClick={() => navigate("/login")}>Go to Login</button>
+              </div>
+          </div>
+      )
+  }
+
+  if (loading) {
+      return <div className="cart-page-wrapper" style={{textAlign: 'center', padding: '100px 0'}}>Loading cart...</div>
+  }
 
   const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   const shipping = subtotal > 1000 ? 0 : 50; 
@@ -73,8 +120,8 @@ const Cart = () => {
             </div>
             <h2>Your cart is empty</h2>
             <p>Looks like you haven't added any items yet.</p>
-            <button className="btn-primary" onClick={() => window.history.back()}>
-              Continue Shopping
+            <button className="btn-primary" onClick={() => navigate("/")}>
+              Start Shopping
             </button>
           </div>
         ) : (
@@ -99,13 +146,13 @@ const Cart = () => {
                       <div className="quantity-control">
                         <button 
                           className="qty-btn"
-                          onClick={() => updateQuantity(item.productId, item.quantity - 1)}>
+                          onClick={() => handleUpdateQuantity(item.productId, item.quantity, -1)}>
                           -
                         </button>
                         <input type="number" value={item.quantity} readOnly />
                         <button 
                           className="qty-btn"
-                          onClick={() => updateQuantity(item.productId, item.quantity + 1)}>
+                          onClick={() => handleUpdateQuantity(item.productId, item.quantity, 1)}>
                           +
                         </button>
                       </div>
@@ -118,7 +165,7 @@ const Cart = () => {
                       <button className="btn-buy-single" onClick={() => handleSinglePurchase(item)}>
                         Buy Now
                       </button>
-                      <button className="btn-remove" onClick={() => removeItem(item.productId)}>
+                      <button className="btn-remove" onClick={() => handleRemoveItem(item.productId)}>
                         <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
@@ -176,3 +223,4 @@ const Cart = () => {
 };
 
 export default Cart;
+

@@ -1,9 +1,30 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/login.css';
 import "../../../shared/style.css"
+import { useAuth } from '../hooks/useAuth';
 
 function Login() {
+    const { loading, handleLogin } = useAuth()
+    const navigate = useNavigate()
+
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    async function handleSubmit(e) {
+        e.preventDefault()
+        try {
+            await handleLogin({ email, password })
+            navigate("/")
+        } catch (err) {
+            // Error is already toasted in useAuth
+        }
+    }
+
+    const handleGoogleLogin = () => {
+        window.location.href = "http://localhost:3000/api/auth/google";
+    };
+
     return (
         <div className="login-page">
             <div className="login-container">
@@ -14,20 +35,20 @@ function Login() {
                     <p>Sign in to your account</p>
                 </div>
 
-                <form className="login-form">
+                <form onSubmit={handleSubmit} className="login-form">
 
                     <div className="form-group">
                         <label>Email</label>
-                        <input type="email" placeholder="you@email.com" />
+                        <input type="email" placeholder="you@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
                     </div>
 
                     <div className="form-group">
                         <label>Password</label>
-                        <input type="password" placeholder="••••••••" />
+                        <input type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
 
-                    <button type="submit" className="login-btn">
-                        Sign In
+                    <button type="submit" className="login-btn" disabled={loading}>
+                        {loading ? "Signing In..." : "Sign In"}
                     </button>
 
                 </form>
@@ -36,7 +57,7 @@ function Login() {
                     <span>or</span>
                 </div>
 
-                <button className="google-btn">
+                <button className="google-btn" onClick={handleGoogleLogin}>
                     Continue with Google
                 </button>
 
@@ -50,3 +71,4 @@ function Login() {
 }
 
 export default Login;
+

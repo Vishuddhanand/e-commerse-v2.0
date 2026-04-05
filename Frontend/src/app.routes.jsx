@@ -5,6 +5,8 @@ import Home from './features/home/pages/Home';
 import Cart from './features/cart/pages/Cart';
 import Order from './features/order/pages/Order';
 import Category from './features/categories/pages/Category'
+import Profile from './features/auth/pages/Profile';
+import AuthSuccess from './features/auth/pages/AuthSuccess';
 
 
 
@@ -18,6 +20,8 @@ function AppRoutes() {
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/order" element={<Order />} />
                 <Route path="/category/:categoryName" element={<Category />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/auth/success" element={<AuthSuccess />} />
             </Routes>
         </BrowserRouter>
     )

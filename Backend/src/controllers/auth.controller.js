@@ -34,6 +34,7 @@ async function registerController(req, res) {
 
     res.status(201).json({
         message: "User registered successfully",
+        token,
         user: {
             username: user.username,
             email: user.email
@@ -71,7 +72,9 @@ async function loginController(req, res) {
 
     res.status(200).json({
         message: "User logged in successfully",
+        token,
         user: {
+            username: user.username,
             email: user.email
         }
     })
@@ -96,7 +99,7 @@ async function googleCallbackController(req, res) {
         });
 
         // redirect to frontend
-        res.redirect("http://127.0.0.1:3001");
+        res.redirect(`http://localhost:5173/auth/success?token=${token}`);
 
     } catch (err) {
         res.status(500).json({
@@ -107,33 +110,33 @@ async function googleCallbackController(req, res) {
 }
 
 function logoutController(req, res) {
-  res.clearCookie("token");
-  res.json({ message: "Logged out successfully" });
+    res.clearCookie("token");
+    res.json({ message: "Logged out successfully" });
 }
 
 async function getMeController(req, res) {
-  try {
-    const userId = req.user.id; // from JWT middleware
+    try {
+        const userId = req.user.id; // from JWT middleware
 
-    const user = await userModel.findById(userId).select("-password");
+        const user = await userModel.findById(userId).select("-password");
 
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found"
-      });
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        res.status(200).json({
+            message: "User fetched successfully",
+            user
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            message: "Server error",
+            error: err.message
+        });
     }
-
-    res.status(200).json({
-      message: "User fetched successfully",
-      user
-    });
-
-  } catch (err) {
-    res.status(500).json({
-      message: "Server error",
-      error: err.message
-    });
-  }
 }
 
 

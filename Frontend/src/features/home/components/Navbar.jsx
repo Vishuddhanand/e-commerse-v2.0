@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import "../styles/navbar.css"
+import { useAuth } from '../../auth/hooks/useAuth';
 
 const Navbar = () => {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  useEffect(() => {
-    const token = localStorage.getItem("token")
-    if (token) setIsLoggedIn(true)
-  }, [])
-
-  const handleLogout = () => {
-    localStorage.removeItem("token")
-    setIsLoggedIn(false)
-  }
+  const { user, handleLogout } = useAuth();
 
   return (
     <nav className='navbar'>
@@ -39,19 +30,21 @@ const Navbar = () => {
 
       <div className="nav-right">
 
-        {!isLoggedIn ? (
+        {!user ? (
           <Link to="/login" className="btn-login">Login</Link>
         ) : (
           <div className="profile-container">
             <Link to="/cart" className="cart-icon" title="Cart">🛒</Link>
 
             {/* Default Profile Image */}
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-              alt="profile"
-              className="profile-icon"
-              title="Profile"
-            />
+            <Link to="/profile">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                alt="profile"
+                className="profile-icon"
+                title="Profile"
+              />
+            </Link>
 
             <button onClick={handleLogout} className="btn-logout">Logout</button>
           </div>

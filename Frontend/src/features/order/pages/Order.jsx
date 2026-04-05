@@ -1,45 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/order.css';
-import products from '../../../data/product'; // ✅ IMPORT YOUR MAIN DATA
+import products from '../../../data/product';
+import { useAuth } from '../../auth/hooks/useAuth';
+import { toast } from 'react-hot-toast';
 
 const Order = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
-  // ✅ Get product ID from URL
   const productId = searchParams.get('product');
-
-  // ✅ Find product from array
-  const productInfo =
-    products.find((p) => p.id === productId) || products[0];
+  const productInfo = products.find((p) => p.id === productId) || products[0];
 
   const [quantity, setQuantity] = useState(1);
+  const [cartLoading, setCartLoading] = useState(false);
+  const [formVisible, setFormVisible] = useState(false);
+  const [thankYouVisible, setThankYouVisible] = useState(false);
 
   const [formData, setFormData] = useState({
-    userName: '',
+    userName: user?.username || '',
     userPhone: '',
     userAddress: ''
   });
 
-  const [formVisible, setFormVisible] = useState(false);
-  const [thankYouVisible, setThankYouVisible] = useState(false);
-
-  // Add to Cart state
-  const [cartToast, setCartToast] = useState(null); // { type: 'success' | 'error' | 'login', msg: '' }
-  const [cartLoading, setCartLoading] = useState(false);
-
-  const showToast = (type, msg) => {
-    setCartToast({ type, msg });
-  };
-
+  // Pre-fill username when user loads
   useEffect(() => {
-    if (!cartToast) return;
-    const t = setTimeout(() => setCartToast(null), 3000);
-    return () => clearTimeout(t);
-  }, [cartToast]);
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        userName: user.username || ''
+      }))
+    }
+  }, [user]);
 
   const handleAddToCart = async () => {
+    if (!user) {
+      toast.error("🔒 Please log in to add items to cart");
+      navigate("/login");
+      return;
+    }
+
     setCartLoading(true);
     try {
       await axios.post(
@@ -51,46 +53,54 @@ const Order = () => {
         },
         { withCredentials: true }
       );
-      showToast('success', '🛒 Added to cart successfully!');
+      toast.success('🛒 Added to cart successfully!');
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 401) {
-        showToast('login', '🔒 Please log in to add items to cart');
+        toast.error('🔒 Please log in to add items to cart');
+        navigate("/login");
       } else {
-        showToast('error', 'Server unreachable. Is the backend running?');
+        toast.error('Server unreachable. Is the backend running?');
       }
     } finally {
       setCartLoading(false);
     }
   };
 
+  // ✅ Login check before showing form
   const handleOrderClick = () => {
+    if (!user) {
+      toast.error("🔒 Please login to place an order");
+      navigate("/login");
+      return;
+    }
     setFormVisible(true);
   };
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // ✅ Fixed WhatsApp message
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const { userName, userPhone, userAddress } = formData;
+    const total = productInfo.price * quantity;
 
-    const message = `New order received!%0A
-Name: ${userName}%0A
-Phone: ${userPhone}%0A
-Address: ${userAddress}%0A
-Product: ${productInfo.name}%0A
-Quantity: ${quantity}%0A
-Payment: Cash on Delivery`;
+    const message = `🛒 New Order - Shree Krishna Enterprises
 
-    const ownerNumber = "919112162207";
+👤 Name: ${userName}
+📞 Phone: ${userPhone}
+📍 Address: ${userAddress}
 
-    const whatsappUrl = `https://wa.me/${ownerNumber}?text=${message}`;
+📦 Product: ${productInfo.name}
+🔢 Quantity: ${quantity}
+💰 Total: ₹${total}
+💳 Payment: Cash on Delivery`;
+
+    const ownerNumber = "919637401456";
+    const whatsappUrl = `https://wa.me/${ownerNumber}?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, "_blank");
 
@@ -101,22 +111,14 @@ Payment: Cash on Delivery`;
   };
 
   const handleImageError = (e) => {
-    e.target.src =
-      "https://images.unsplash.com/photo-1596647413661-bc935da66f07?w=300";
+    e.target.src = "https://images.unsplash.com/photo-1596647413661-bc935da66f07?w=300";
   };
 
   return (
     <div className="order-page-wrapper">
-      {/* Cart Toast Notification */}
-      {cartToast && (
-        <div className={`cart-toast cart-toast--${cartToast.type}`}>
-          {cartToast.msg}
-        </div>
-      )}
       <div className="order-page-inner">
         <section className="product-detail">
 
-          {/* ✅ PRODUCT INFO */}
           <div className="product-detail-container">
             <img
               className="detail-img"
@@ -128,9 +130,7 @@ Payment: Cash on Delivery`;
             <div className="detail-info">
               <h2>{productInfo.name}</h2>
               <p>{productInfo.desc}</p>
-              <span className="price-order-page">
-                ₹{productInfo.price}
-              </span>
+              <span className="price-order-page">₹{productInfo.price}</span>
 
               {!formVisible && !thankYouVisible && (
                 <>
@@ -140,17 +140,12 @@ Payment: Cash on Delivery`;
                       type="number"
                       min="1"
                       value={quantity}
-                      onChange={(e) =>
-                        setQuantity(Number(e.target.value))
-                      }
+                      onChange={(e) => setQuantity(Number(e.target.value))}
                     />
                   </div>
 
                   <div className="order-btn-group">
-                    <button
-                      className="btn-order-page"
-                      onClick={handleOrderClick}
-                    >
+                    <button className="btn-order-page" onClick={handleOrderClick}>
                       🚚 Place Order (COD)
                     </button>
 
@@ -159,11 +154,7 @@ Payment: Cash on Delivery`;
                       onClick={handleAddToCart}
                       disabled={cartLoading}
                     >
-                      {cartLoading ? (
-                        <span className="cart-btn-spinner" />
-                      ) : (
-                        '🛒'
-                      )}
+                      {cartLoading ? <span className="cart-btn-spinner" /> : '🛒'}
                       {cartLoading ? 'Adding...' : 'Add to Cart'}
                     </button>
                   </div>
@@ -172,12 +163,12 @@ Payment: Cash on Delivery`;
             </div>
           </div>
 
-          {/* ✅ FORM */}
+          {/* FORM */}
           {formVisible && (
             <div className="order-form">
               <h3>Place Your Order</h3>
-
               <form onSubmit={handleSubmit}>
+
                 <input
                   type="text"
                   name="userName"
@@ -204,18 +195,42 @@ Payment: Cash on Delivery`;
                   required
                 />
 
-                <button type="submit" className="btn-order-page">
-                  Confirm via WhatsApp
-                </button>
+                <div style={{ display: "flex", gap: "1rem" }}>
+                  <button type="submit" className="btn-order-page">
+                    Confirm via WhatsApp
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormVisible(false)}
+                    style={{
+                      padding: ".7rem 1.5rem",
+                      background: "transparent",
+                      border: "1.5px solid #555",
+                      color: "#aaa",
+                      borderRadius: "8px",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+
               </form>
             </div>
           )}
 
-          {/* ✅ THANK YOU */}
+          {/* THANK YOU */}
           {thankYouVisible && (
             <div className="thankyou-msg">
               <h3>✅ Order Placed Successfully!</h3>
               <p>We will contact you on WhatsApp soon.</p>
+              <button
+                className="btn-order-page"
+                style={{ marginTop: "1rem" }}
+                onClick={() => navigate("/")}
+              >
+                Back to Home
+              </button>
             </div>
           )}
 

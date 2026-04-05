@@ -1,8 +1,30 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/register.css";
+import { useAuth } from '../hooks/useAuth';
 
 const Register = () => {
+  const { loading, handleRegister } = useAuth()
+  const navigate = useNavigate()
+
+  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    try {
+      await handleRegister({ username, email, password })
+      navigate("/")
+    } catch (err) {
+      // Error handled in useAuth
+    }
+  }
+
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:3000/api/auth/google";
+  };
+
   return (
     <div className="register-page">
       <div className="register-container">
@@ -13,31 +35,33 @@ const Register = () => {
           <p>Join us and start shopping</p>
         </div>
 
-        <form className="register-form">
+        <form onSubmit={handleSubmit} className="register-form">
 
           <div className="form-group">
             <label>Username</label>
-            <input type="text" placeholder="Enter your username" />
+            <input type="text" placeholder="Enter your username" value={username} onChange={(e) => setUsername(e.target.value)} required />
           </div>
 
           <div className="form-group">
             <label>Email</label>
-            <input type="email" placeholder="Enter your email" />
+            <input type="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
 
           <div className="form-group">
             <label>Password</label>
-            <input type="password" placeholder="Enter your password" />
+            <input type="password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </div>
 
-          <button className="register-btn">Create Account</button>
+          <button type="submit" className="register-btn" disabled={loading}>
+            {loading ? "Creating Account..." : "Create Account"}
+          </button>
         </form>
 
         <div className="divider">
           <span>or</span>
         </div>
 
-        <button className="google-btn">
+        <button className="google-btn" onClick={handleGoogleLogin}>
           Continue with Google
         </button>
 
