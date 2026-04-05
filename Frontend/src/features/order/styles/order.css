@@ -3,15 +3,14 @@
 
 .order-page-wrapper {
     min-height: 100vh;
-    /* Matching modern gradient background from login/cart */
+    overflow-y: visible;
     background: linear-gradient(-45deg, #f7f7f7, #ffe0b2, #ffb74d, #ffffff);
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
     display: flex;
     align-items: flex-start;
-    /* Ensures content flows downwards on long order forms */
     justify-content: center;
-    padding: 4rem 1rem;
+    padding: 7rem 1rem 4rem 1rem; 
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     color: #1f2937;
 }
@@ -238,7 +237,9 @@
 }
 
 @keyframes spinCart {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ── Toast Notification ── */
@@ -255,7 +256,7 @@
     color: #ffffff;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     animation: toastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-               toastFadeOut 0.35s ease 2.65s forwards;
+        toastFadeOut 0.35s ease 2.65s forwards;
     max-width: 340px;
     line-height: 1.4;
 }
@@ -277,6 +278,7 @@
         opacity: 0;
         transform: translateY(20px) scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -284,8 +286,14 @@
 }
 
 @keyframes toastFadeOut {
-    from { opacity: 1; }
-    to   { opacity: 0; transform: translateY(10px); }
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(10px);
+    }
 }
 
 .btn:hover {

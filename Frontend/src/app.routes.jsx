@@ -9,7 +9,6 @@ import Profile from './features/auth/pages/Profile';
 import AuthSuccess from './features/auth/pages/AuthSuccess';
 
 
-
 function AppRoutes() {
     return (
         <BrowserRouter>

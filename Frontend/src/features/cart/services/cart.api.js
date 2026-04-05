@@ -5,6 +5,15 @@ const api = axios.create({
     withCredentials: true
 })
 
+// Attach JWT token to every request
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token")
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+})
+
 export async function getCart() {
     const response = await api.get("/api/cart")
     return response.data
@@ -12,7 +21,9 @@ export async function getCart() {
 
 export async function addToCart({ productId, name, price }) {
     const response = await api.post("/api/cart/add", {
-        productId, name, price
+        productId: String(productId),  
+        name,
+        price
     })
     return response.data
 }

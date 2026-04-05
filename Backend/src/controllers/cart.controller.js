@@ -1,70 +1,85 @@
 const Cart = require("../models/cart.model");
 
-
 async function addToCart(req, res) {
-  const userId = req.user.id;
-  const { productId, name, price } = req.body;
+  try {
+    const userId = req.user.id;
+    const { productId, name, price } = req.body;
 
-  let cart = await Cart.findOne({ user: userId });
-
-  if (!cart) {
-    cart = await Cart.create({
-      user: userId,
-      items: [{ productId, name, price }]
-    });
-  } else {
-    const itemIndex = cart.items.findIndex(
-      item => item.productId === productId
-    );
-
-    if (itemIndex > -1) {
-      cart.items[itemIndex].quantity += 1;
-    } else {
-      cart.items.push({ productId, name, price });
+    // ✅ Validate required fields
+    if (!productId || !name || !price) {
+      return res.status(400).json({ message: "productId, name and price are required" });
     }
 
-    await cart.save();
+    let cart = await Cart.findOne({ user: userId });
+
+    if (!cart) {
+      cart = await Cart.create({
+        user: userId,
+        items: [{ productId: String(productId), name, price }]
+      });
+    } else {
+      const itemIndex = cart.items.findIndex(
+        item => String(item.productId) === String(productId)  // ✅ compare as strings
+      );
+
+      if (itemIndex > -1) {
+        cart.items[itemIndex].quantity += 1;
+      } else {
+        cart.items.push({ productId: String(productId), name, price });
+      }
+
+      await cart.save();
+    }
+
+    res.json(cart);
+  } catch (err) {
+    console.error("addToCart error:", err.message);
+    res.status(500).json({ message: "Failed to add to cart", error: err.message });
   }
-
-  res.json(cart);
 }
-
-
 
 async function getCart(req, res) {
-  const userId = req.user.id;
-
-  const cart = await Cart.findOne({ user: userId });
-
-  res.json(cart || { items: [] });
+  try {
+    const userId = req.user.id;
+    const cart = await Cart.findOne({ user: userId });
+    res.json(cart || { items: [] });
+  } catch (err) {
+    console.error("getCart error:", err.message);
+    res.status(500).json({ message: "Failed to get cart", error: err.message });
+  }
 }
-
-
 
 async function removeFromCart(req, res) {
-  const userId = req.user.id;
-  const { productId } = req.params;
+  try {
+    const userId = req.user.id;
+    const { productId } = req.params;
 
-  const cart = await Cart.findOne({ user: userId });
+    const cart = await Cart.findOne({ user: userId });
 
-  if (!cart) return res.json({ message: "Cart empty" });
+    if (!cart) return res.json({ message: "Cart empty" });
 
-  cart.items = cart.items.filter(
-    item => item.productId != productId
-  );
+    // ✅ compare as strings
+    cart.items = cart.items.filter(
+      item => String(item.productId) !== String(productId)
+    );
 
-  await cart.save();
-
-  res.json(cart);
+    await cart.save();
+    res.json(cart);
+  } catch (err) {
+    console.error("removeFromCart error:", err.message);
+    res.status(500).json({ message: "Failed to remove item", error: err.message });
+  }
 }
 
-
 async function clearCart(req, res) {
-  const userId = req.user.id;
-
-  await Cart.findOneAndDelete({ user: userId });
-
-  res.json({ message: "Cart cleared" });
+  try {
+    const userId = req.user.id;
+    await Cart.findOneAndDelete({ user: userId });
+    res.json({ message: "Cart cleared" });
+  } catch (err) {
+    console.error("clearCart error:", err.message);
+    res.status(500).json({ message: "Failed to clear cart", error: err.message });
+  }
 }
 
 module.exports = {

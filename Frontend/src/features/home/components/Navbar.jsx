@@ -2,10 +2,27 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import "../styles/navbar.css"
 import { useAuth } from '../../auth/hooks/useAuth';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
 
   const { user, handleLogout } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const scrollToSection = (sectionId) => {
+    if (location.pathname !== '/') {
+      // Not on home page → navigate first then scroll
+      navigate('/');
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+      }, 100); // small delay to let home page render
+    } else {
+      // Already on home page → just scroll
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <nav className='navbar'>
@@ -21,11 +38,11 @@ const Navbar = () => {
       </div>
 
       <div className="nav-middle">
-        <Link to="/" className="nav-link">Home</Link>
-        <Link to="/products" className="nav-link">Products</Link>
-        <Link to="/categories" className="nav-link">Categories</Link>
-        <Link to="/about" className="nav-link">About</Link>
-        <Link to="/contact" className="nav-link">Contact</Link>
+        <span className="nav-link" onClick={() => scrollToSection('home')}>Home</span>
+        <span className="nav-link" onClick={() => scrollToSection('products')}>Products</span>
+        <span className="nav-link" onClick={() => scrollToSection('categories')}>Categories</span>
+        <span className="nav-link" onClick={() => scrollToSection('about')}>About</span>
+        <span className="nav-link" onClick={() => scrollToSection('footer')}>Contact</span>
       </div>
 
       <div className="nav-right">
