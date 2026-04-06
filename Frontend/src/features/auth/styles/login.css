@@ -54,6 +54,7 @@
   display: inline-block;
   background: linear-gradient(135deg, #ff9800, #f57c00);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -220,4 +221,22 @@
 .register-text a:hover {
   color: #e65100;
   text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .login-page {
+    padding: 1rem;
+  }
+  
+  .login-container {
+    padding: 1.5rem;
+  }
+  
+  .login-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .brand-name {
+    font-size: 0.9rem;
+  }
 }

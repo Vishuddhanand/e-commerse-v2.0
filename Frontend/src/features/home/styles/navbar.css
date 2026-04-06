@@ -1,5 +1,5 @@
 :root {
-  --nav-bg: rgba(35, 39, 45, 0.95); 
+  --nav-bg: rgba(35, 39, 45, 0.95);
   --nav-border: rgba(255, 255, 255, 0.1);
   --nav-text: #fff;
   --nav-text-hover: #ff9800;
@@ -127,14 +127,14 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
 }
 
 .profile-icon:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .cart-icon {
@@ -183,7 +183,7 @@
   .navbar {
     padding: 1rem 2rem;
   }
-  
+
   .nav-middle {
     gap: 1rem;
   }
@@ -191,7 +191,8 @@
 
 @media (max-width: 768px) {
   .nav-middle {
-    display: none; /* Mobile menu should be implemented here */
+    display: none;
+    /* Mobile menu should be implemented here */
   }
 }
 
@@ -199,11 +200,11 @@
   .navbar {
     padding: 1rem;
   }
-  
+
   .nav-right {
     gap: 0.75rem;
   }
-  
+
   .brand-logo span {
     display: none;
   }

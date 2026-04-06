@@ -49,11 +49,11 @@ async function handleGetMe() {
     try {
         const data = await getMe()
         setUser(data.user)
-        return data        // ← make sure this return exists
+        return data        
     } catch (err) {
         setUser(null)
         localStorage.removeItem("token")
-        throw err          // ← rethrow so .catch() in AuthSuccess works
+        throw err          
     } finally {
         setLoading(false)
     }
