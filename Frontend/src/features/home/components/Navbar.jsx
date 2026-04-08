@@ -51,6 +51,10 @@ const Navbar = () => {
           <Link to="/login" className="btn-login">Login</Link>
         ) : (
           <div className="profile-container">
+            {user.role === 'admin' && (
+              <Link to="/admin" className="nav-link admin-link" title="Admin Dashboard">Dashboard</Link>
+            )}
+            <Link to="/order-history" className="nav-link" title="My Orders">Orders</Link>
             <Link to="/cart" className="cart-icon" title="Cart">🛒</Link>
 
             {/* Default Profile Image */}

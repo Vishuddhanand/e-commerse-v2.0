@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+.admin-dashboard {
+    min-height: 100vh;
+    padding: 40px 20px 60px;
+    background: linear-gradient(-45deg, #f7f7f7, #ffe0b2, #ffb74d, #ffffff);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    font-family: 'Inter', sans-serif;
+    color: #1f2937;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+}
+
+.admin-header {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.admin-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.admin-header p {
+    color: #6b7280;
+}
+
+.orders-table-wrapper {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    overflow-x: auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.orders-table th, .orders-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.orders-table th {
+    background: #f9fafb;
+    color: #4b5563;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.customer-info strong {
+    color: #111827;
+}
+
+.customer-info span {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.status-pill {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.status-pill.pending { background: #fff7ed; color: #ff9800; border: 1px solid #ffedd5; }
+.status-pill.confirmed { background: #eff6ff; color: #2196f3; border: 1px solid #dbeafe; }
+.status-pill.shipped { background: #fdf4ff; color: #9c27b0; border: 1px solid #fae8ff; }
+.status-pill.delivered { background: #f0fdf4; color: #4caf50; border: 1px solid #dcfce7; }
+.status-pill.cancelled { background: #fef2f2; color: #f44336; border: 1px solid #fee2e2; }
+
+.status-select {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    color: #374151;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.status-select:focus {
+    outline: none;
+    border-color: #ff9800;
+    box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/cart.css';
 import { getCart, removeFromCart, addToCart, clearCart, decrementFromCart } from '../services/cart.api';
+import { createOrder } from '../../order/services/order.api';
 import products from '../../../data/product';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -111,16 +112,35 @@ const Cart = () => {
   };
 
   // Sends WhatsApp after form is filled
-  const handleCheckoutSubmit = (e) => {
+  const handleCheckoutSubmit = async (e) => {
     e.preventDefault();
 
     const { userName, userPhone, userAddress } = checkoutForm;
 
-    const itemsList = cartItems.map(item =>
-      `• ${item.name} x${item.quantity} = ₹${(item.price * item.quantity).toFixed(2)}`
-    ).join("\n");
+    const formattedProducts = cartItems.map(item => ({
+      productId: String(item.productId),
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity,
+      total: item.price * item.quantity
+    }));
 
-    const message = `🛒 Cart Order - Shree Krishna Enterprises
+    try {
+      // 1. Save to Database
+      await createOrder({
+        userName,
+        userPhone,
+        userAddress,
+        products: formattedProducts,
+        totalAmount: total
+      });
+
+      // 2. Prepare WhatsApp Message
+      const itemsList = cartItems.map(item =>
+        `• ${item.name} x${item.quantity} = ₹${(item.price * item.quantity).toFixed(2)}`
+      ).join("\n");
+
+      const message = `🛒 Cart Order - Shree Krishna Enterprises
 
  Name: ${userName}
  Phone: ${userPhone}
@@ -134,12 +154,23 @@ Shipping: ${shipping === 0 ? "Free" : `₹${shipping}`}
 Total: ₹${total.toFixed(2)}
 Payment: Cash on Delivery`;
 
-    const ownerNumber = "919637401456";
-    const whatsappUrl = `https://wa.me/${ownerNumber}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, "_blank");
+      const ownerNumber = "919637401456";
+      const whatsappUrl = `https://wa.me/${ownerNumber}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, "_blank");
 
-    setCheckoutVisible(false);
-    toast.success("Order sent via WhatsApp! 🎉");
+      // 3. Clear Cart
+      await clearCart();
+      setCartItems([]);
+      setCheckoutVisible(false);
+      toast.success("Order confirmed and sent via WhatsApp! 🎉");
+      
+      // 4. Navigate to order history or home
+      setTimeout(() => navigate("/order-history"), 2000);
+
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to process order. Please try again.");
+    }
   };
 
   if (!user && !loading) {

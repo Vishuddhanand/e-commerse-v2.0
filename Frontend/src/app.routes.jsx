@@ -7,6 +7,8 @@ import Order from './features/order/pages/Order';
 import Category from './features/categories/pages/Category'
 import Profile from './features/auth/pages/Profile';
 import AuthSuccess from './features/auth/pages/AuthSuccess';
+import OrderHistory from './features/order/pages/OrderHistory';
+import Admin from './features/admin/pages/Admin';
 
 
 function AppRoutes() {
@@ -20,6 +22,8 @@ function AppRoutes() {
                 <Route path="/order" element={<Order />} />
                 <Route path="/category/:categoryName" element={<Category />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/order-history" element={<OrderHistory />} />
+                <Route path="/admin" element={<Admin />} />
                 <Route path="/auth/success" element={<AuthSuccess />} />
             </Routes>
         </BrowserRouter>
