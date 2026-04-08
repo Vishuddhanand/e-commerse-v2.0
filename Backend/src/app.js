@@ -6,6 +6,7 @@ const cors = require("cors");
 const passport = require("./config/passport"); 
 const authRouter = require("./routes/auth.routes");
 const cartRouter = require("./routes/cart.routes");
+const orderRouter = require("./routes/order.routes");
 
 const app = express();
 
@@ -30,5 +31,6 @@ app.use(passport.session());
 
 app.use("/api/auth", authRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/orders", orderRouter);
 
 module.exports = app;

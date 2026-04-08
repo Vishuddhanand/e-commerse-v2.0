@@ -33,6 +33,11 @@ export async function removeFromCart(productId) {
     return response.data
 }
 
+export async function decrementFromCart(productId) {
+    const response = await api.delete(`/api/cart/decrement/${productId}`)
+    return response.data
+}
+
 export async function clearCart() {
     const response = await api.delete("/api/cart/clear")
     return response.data

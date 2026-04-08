@@ -27,26 +27,17 @@ const Profile = () => {
                 <div className="profile-content" style={{ marginTop: '20px' }}>
                     <div className="profile-info-group" style={{ marginBottom: '15px' }}>
                         <label style={{ fontWeight: 'bold', display: 'block', color: '#666' }}>Username</label>
-                        <div style={{ fontSize: '1.2rem', padding: '10px', background: '#f9f9f9', borderRadius: '8px' }}>
+                        <div style={{ fontSize: '1.2rem', padding: '10px', background: '#f9f9f9', borderRadius: '8px' ,color: '#555' }}>
                             {user.username}
                         </div>
                     </div>
 
                     <div className="profile-info-group" style={{ marginBottom: '15px' }}>
                         <label style={{ fontWeight: 'bold', display: 'block', color: '#666' }}>Email</label>
-                        <div style={{ fontSize: '1.2rem', padding: '10px', background: '#f9f9f9', borderRadius: '8px' }}>
+                        <div style={{ fontSize: '1.2rem', padding: '10px', background: '#f9f9f9', borderRadius: '8px', color: '#555' }}>
                             {user.email}
                         </div>
                     </div>
-
-                    {user.role && (
-                        <div className="profile-info-group" style={{ marginBottom: '15px' }}>
-                            <label style={{ fontWeight: 'bold', display: 'block', color: '#666' }}>Role</label>
-                            <div style={{ fontSize: '1.2rem', padding: '10px', background: '#f9f9f9', borderRadius: '8px', textTransform: 'capitalize' }}>
-                                {user.role}
-                            </div>
-                        </div>
-                    )}
 
                     <div className="profile-actions" style={{ marginTop: '30px', display: 'flex', gap: '10px' }}>
                         <button 

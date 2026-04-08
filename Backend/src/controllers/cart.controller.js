@@ -71,6 +71,35 @@ async function removeFromCart(req, res) {
   }
 }
 
+async function decrementFromCart(req, res) {
+  try {
+    const userId = req.user.id;
+    const { productId } = req.params;
+
+    const cart = await Cart.findOne({ user: userId });
+    if (!cart) return res.status(404).json({ message: "Cart not found" });
+
+    const itemIndex = cart.items.findIndex(
+      item => String(item.productId) === String(productId)
+    );
+
+    if (itemIndex > -1) {
+      if (cart.items[itemIndex].quantity > 1) {
+        cart.items[itemIndex].quantity -= 1;
+      } else {
+        // If quantity is 1, remove the item
+        cart.items.splice(itemIndex, 1);
+      }
+      await cart.save();
+    }
+
+    res.json(cart);
+  } catch (err) {
+    console.error("decrementFromCart error:", err.message);
+    res.status(500).json({ message: "Failed to decrement item", error: err.message });
+  }
+}
+
 async function clearCart(req, res) {
   try {
     const userId = req.user.id;
@@ -82,9 +111,12 @@ async function clearCart(req, res) {
   }
 }
 
+
+
 module.exports = {
   addToCart,
   getCart,
   removeFromCart,
+  decrementFromCart,
   clearCart
 };

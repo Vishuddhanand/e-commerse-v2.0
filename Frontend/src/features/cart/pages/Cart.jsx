@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/cart.css';
-import { getCart, removeFromCart, addToCart, clearCart } from '../services/cart.api';
+import { getCart, removeFromCart, addToCart, clearCart, decrementFromCart } from '../services/cart.api';
 import products from '../../../data/product';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -29,9 +29,9 @@ const Cart = () => {
     }
   }, [user]);
 
-  const fetchCartItems = async () => {
+  const fetchCartItems = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const data = await getCart();
 
       const itemsWithImages = data.items.map(item => {
@@ -48,7 +48,7 @@ const Cart = () => {
       console.error(err);
       toast.error("Failed to load cart");
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
@@ -68,15 +68,9 @@ const Cart = () => {
         const item = cartItems.find(i => i.productId === productId);
         await addToCart({ productId, name: item.name, price: item.price });
       } else {
-        if (currentQty === 1) {
-          await removeFromCart(productId);
-          toast.success("Item removed from cart");
-        } else {
-          toast("Use remove button to delete item", { icon: "ℹ️" });
-          return;
-        }
+        await decrementFromCart(productId);
       }
-      await fetchCartItems();
+      await fetchCartItems(true); // Silent update to prevent re-render flicker
     } catch (err) {
       toast.error("Update failed");
     }
@@ -86,7 +80,7 @@ const Cart = () => {
     try {
       await removeFromCart(productId);
       toast.success("Item removed from cart");
-      await fetchCartItems();
+      await fetchCartItems(true); // Silent update
     } catch (err) {
       toast.error("Remove failed");
     }

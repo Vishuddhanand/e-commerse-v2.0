@@ -6,12 +6,14 @@ const {
   addToCart,
   getCart,
   removeFromCart,
+  decrementFromCart,
   clearCart
 } = require("../controllers/cart.controller");
 
 cartRouter.post("/add", authMiddleware, addToCart);
 cartRouter.get("/", authMiddleware, getCart);
 cartRouter.delete("/remove/:productId", authMiddleware, removeFromCart);
+cartRouter.delete("/decrement/:productId", authMiddleware, decrementFromCart);
 cartRouter.delete("/clear", authMiddleware, clearCart);
 
 module.exports = cartRouter;
