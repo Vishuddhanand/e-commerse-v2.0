@@ -17,7 +17,7 @@ const Navbar = () => {
       navigate('/');
       setTimeout(() => {
         document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
-      }, 100); // small delay to let home page render
+      }, 100); // Delay to ensure home page has rendered
     } else {
       // Already on home page → just scroll
       document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
@@ -67,7 +67,7 @@ const Navbar = () => {
               />
             </Link>
 
-            <button onClick={handleLogout} className="btn-logout">Logout</button>
+            {/* <button onClick={handleLogout} className="btn-logout">Logout</button> */}
           </div>
         )}
 
