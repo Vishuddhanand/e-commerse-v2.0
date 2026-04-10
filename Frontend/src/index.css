@@ -25,6 +25,28 @@ a:hover {
 body {
   margin: 0;
   min-width: 320px;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+#root {
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
 }
 
 h1 {

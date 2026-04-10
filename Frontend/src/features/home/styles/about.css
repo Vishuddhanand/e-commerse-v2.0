@@ -186,3 +186,46 @@
     font-size: 2rem;
   }
 }
+
+@media (max-width: 480px) {
+  .about {
+    padding: 2.5rem 0.75rem;
+  }
+
+  .about-container {
+    gap: 2.5rem;
+  }
+
+  .about-content p {
+    font-size: 1rem;
+  }
+
+  .lead-text {
+    font-size: 1.1rem !important;
+  }
+
+  .about-img-box img {
+    height: 250px;
+  }
+
+  .about-stats {
+    gap: 1rem;
+  }
+
+  .stat-item h4 {
+    font-size: 1.6rem;
+  }
+
+  .stat-item span {
+    font-size: 0.8rem;
+  }
+
+  .experience-badge {
+    width: 90px;
+    height: 90px;
+    font-size: 0.85rem;
+    bottom: -10px;
+    left: -10px;
+    padding: 1rem;
+  }
+}

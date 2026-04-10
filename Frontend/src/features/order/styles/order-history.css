@@ -220,3 +220,37 @@
     align-items: center;
   }
 }
+
+@media (max-width: 480px) {
+  .order-history-page {
+    padding: 20px 10px 40px;
+  }
+
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 14px 16px;
+  }
+
+  .order-body {
+    padding: 16px;
+  }
+
+  .product-name {
+    font-size: 0.9rem;
+  }
+
+  .product-price {
+    width: 80px;
+    font-size: 0.9rem;
+  }
+
+  .total-amount .value {
+    font-size: 1.25rem;
+  }
+}

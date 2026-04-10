@@ -1,0 +1,12 @@
+{
+  "navbar": {
+    "home": "Home",
+    "products": "Products",
+    "categories": "Categories",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "dashboard": "Dashboard",
+    "orders": "Orders"
+  }
+}

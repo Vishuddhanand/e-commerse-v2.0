@@ -136,3 +136,23 @@
     padding: 2rem 1.5rem;
   }
 }
+
+@media (max-width: 480px) {
+  .testimonials {
+    padding: 3rem 0;
+  }
+
+  .testimonial-card {
+    width: 260px;
+    padding: 1.5rem 1.25rem;
+  }
+
+  .testimonial-img {
+    width: 65px;
+    height: 65px;
+  }
+
+  .testimonial-card p {
+    font-size: 0.95rem;
+  }
+}

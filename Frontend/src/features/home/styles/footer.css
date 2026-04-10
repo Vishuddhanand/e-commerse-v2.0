@@ -4,6 +4,7 @@
   color: #f8fafc;
   font-family: inherit;
   margin-top: 4rem;
+  overflow: hidden;
 }
 
 /* Base Top Container */
@@ -166,5 +167,34 @@
   
   .footer-section h4::after {
     width: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-main {
+    padding: 2.5rem 1rem;
+    gap: 2rem;
+  }
+
+  .footer-section h3 {
+    font-size: 1.25rem;
+  }
+
+  .footer-section h4 {
+    font-size: 1.05rem;
+  }
+
+  .brand-section p,
+  .links-section a,
+  .contact-details p {
+    font-size: 0.95rem;
+  }
+
+  .footer-logo img {
+    width: 110px;
+  }
+
+  .footer-bottom p {
+    font-size: 0.85rem;
   }
 }
