@@ -40,3 +40,11 @@ export async function logout() {
     const response = await api.post("/api/auth/logout")
     return response.data
 }
+
+export async function verifyOtp({ email, otp }) {
+    const response = await api.post("/api/auth/verify-otp", {
+        email,
+        otp
+    })
+    return response.data
+}

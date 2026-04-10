@@ -1,24 +1,35 @@
 const userModel = require("../models/user.model");
-const bcrypt = require("bcryptjs");
+const sessionModel = require("../models/session.model");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const otpModel = require("../models/otp.model");
+const { sendEmail } = require("../services/email.service");
+const config = require("../config/config");
+const { generateOtp, getOtpHtml } = require("../utils/otp.utils");
 
 async function registerController(req, res) {
     try {
         const { username, email, password, adminKey } = req.body;
 
-        const isUserAlreadyExist = await userModel.findOne({
+        const existingUser = await userModel.findOne({
             $or: [{ username }, { email }]
         })
 
-        if (isUserAlreadyExist) {
-            return res.status(400).json({
-                message: "User with the same username or email already exists"
-            })
+        if (existingUser) {
+            if (existingUser.verified) {
+                return res.status(400).json({
+                    message: "User with the same username or email already exists"
+                })
+            } else {
+                // If the user exists but is NOT verified (ghost account from failed OTP), delete them so they can restart registration.
+                await userModel.findByIdAndDelete(existingUser._id);
+                await otpModel.deleteMany({ email: existingUser.email });
+            }
         }
 
-        const hash = await bcrypt.hash(password, 10);
+        const hash = crypto.createHash("sha256").update(password).digest("hex");
 
-        const isAdmin = adminKey && adminKey === process.env.ADMIN_SECRET_KEY;
+        const isAdmin = adminKey && adminKey === config.ADMIN_SECRET_KEY;
 
         const user = await userModel.create({
             username,
@@ -27,22 +38,26 @@ async function registerController(req, res) {
             role: isAdmin ? "admin" : "user"
         })
 
-        const token = jwt.sign({
-            id: user._id,
-            username: user.username,
-            role: user.role
-        }, process.env.JWT_SECRET, { expiresIn: "1d" })
+        const otp = generateOtp();
+        const html = getOtpHtml(otp);
+        const otpHash = crypto.createHash("sha256").update(otp).digest("hex");
 
-        res.cookie("token", token)
+        await otpModel.create({
+            email,
+            user: user._id,
+            otpHash
+        })
+
+        await sendEmail(email, "OTP Verification", `Your OTP code is ${otp}`, html)
 
         res.status(201).json({
-            message: "User registered successfully",
-            token,
+            message: "User registered successfully. Please verify your email via OTP.",
             user: {
                 id: user._id,
                 username: user.username,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                verified: user.verified
             }
         })
     } catch (err) {
@@ -57,39 +72,73 @@ async function loginController(req, res) {
     try {
         const { email, password } = req.body;
 
-        const user = await userModel.findOne({ email }).select("+password")
+        const user = await userModel.findOne({ email }).select("+password");
 
         if (!user) {
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "Invalid email or password"
             })
         }
 
-        const isMatch = await bcrypt.compare(password, user.password)
+        if (!user.verified) {
+            return res.status(401).json({
+                message: "Email not verified"
+            })
+        }
 
-        if (!isMatch) {
-            return res.status(400).json({
+        const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+        const isPasswordValid = hashedPassword === user.password;
+
+        if (!isPasswordValid) {
+            return res.status(401).json({
                 message: "Invalid email or password"
             })
         }
 
-        const token = jwt.sign({
+        const refreshToken = jwt.sign({
+            id: user._id
+        }, config.JWT_SECRET,
+            {
+                expiresIn: "7d"
+            }
+        )
+
+        const refreshTokenHash = crypto.createHash("sha256").update(refreshToken).digest("hex");
+
+        const session = await sessionModel.create({
+            user: user._id,
+            refreshTokenHash,
+            ip: req.ip,
+            userAgent: req.headers[ "user-agent" ]
+        })
+
+        const accessToken = jwt.sign({
             id: user._id,
+            sessionId: session._id,
             username: user.username,
             role: user.role
-        }, process.env.JWT_SECRET, { expiresIn: "1d" })
+        }, config.JWT_SECRET,
+            {
+                expiresIn: "15m"
+            }
+        )
 
-        res.cookie("token", token)
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        })
 
         res.status(200).json({
-            message: "User logged in successfully",
-            token,
+            message: "Logged in successfully",
             user: {
                 id: user._id,
                 username: user.username,
                 email: user.email,
                 role: user.role
-            }
+            },
+            accessToken,
         })
     } catch (err) {
         res.status(500).json({
@@ -109,7 +158,7 @@ async function googleCallbackController(req, res) {
                 username: user.username,
                 role: user.role
             },
-            process.env.JWT_SECRET,
+            config.JWT_SECRET,
             { expiresIn: "1d" }
         );
 
@@ -129,6 +178,7 @@ async function googleCallbackController(req, res) {
 
 function logoutController(req, res) {
     res.clearCookie("token");
+    res.clearCookie("refreshToken"); // also clearing refreshToken
     res.json({ message: "Logged out successfully" });
 }
 
@@ -157,10 +207,63 @@ async function getMeController(req, res) {
     }
 }
 
+async function verifyOtpController(req, res) {
+    try {
+        const { email, otp } = req.body;
+        
+        if (!email || !otp) {
+            return res.status(400).json({ message: "Email and OTP are required" });
+        }
+
+        const otpHash = crypto.createHash("sha256").update(otp).digest("hex");
+        const otpRecord = await otpModel.findOne({ email, otpHash });
+
+        if (!otpRecord) {
+            return res.status(400).json({ message: "Invalid or expired OTP" });
+        }
+
+        const user = await userModel.findById(otpRecord.user);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        user.verified = true;
+        await user.save();
+
+        await otpModel.deleteMany({ email }); // Clear the OTP records
+
+        const token = jwt.sign({
+            id: user._id,
+            username: user.username,
+            role: user.role
+        }, config.JWT_SECRET, { expiresIn: "1d" });
+
+        res.cookie("token", token);
+
+        res.status(200).json({
+            message: "Email verified successfully",
+            token,
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+                verified: user.verified
+            }
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "OTP Verification failed",
+            error: err.message
+        });
+    }
+}
+
 module.exports = {
     registerController,
     loginController,
     googleCallbackController,
     logoutController,
-    getMeController
+    getMeController,
+    verifyOtpController
 }

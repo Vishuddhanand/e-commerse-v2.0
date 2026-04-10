@@ -2,7 +2,7 @@ const { Router } = require("express")
 const authController = require("../controllers/auth.controller")
 const validators = require("../validator/auth.validator")
 const authRouter = Router();
-const passport = require("../config/passport");
+const passport = require("../services/passport");
 const authMiddleware = require("../middlewares/auth.middleware")
 
 authRouter.post("/register", validators.registerValidator, authController.registerController)
@@ -37,5 +37,7 @@ authRouter.get(
 );
 
 authRouter.post("/logout", authController.logoutController)
+
+authRouter.post("/verify-otp", authController.verifyOtpController)
 
 module.exports = authRouter;

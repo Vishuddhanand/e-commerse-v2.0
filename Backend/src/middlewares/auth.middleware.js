@@ -22,6 +22,7 @@
 
 // middleware/auth.middleware.js
 const jwt = require("jsonwebtoken")
+const config = require("../config/config");
 
 function authMiddleware(req, res, next) {
     // Check Authorization header first (localStorage token)
@@ -38,7 +39,7 @@ function authMiddleware(req, res, next) {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const decoded = jwt.verify(token, config.JWT_SECRET)
         req.user = decoded
         next()
     } catch (err) {

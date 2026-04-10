@@ -3,7 +3,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const cors = require("cors");
 
-const passport = require("./config/passport"); 
+const passport = require("./services/passport"); 
 const authRouter = require("./routes/auth.routes");
 const cartRouter = require("./routes/cart.routes");
 const orderRouter = require("./routes/order.routes");
