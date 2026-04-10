@@ -2,6 +2,7 @@
 .categories {
   background: #ffffff;
   padding: 5rem 2rem;
+  overflow: hidden;
 }
 
 .categories .section-header {
@@ -105,5 +106,32 @@
 @media (max-width: 640px) {
   .categories {
     padding: 3rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .categories {
+    padding: 2.5rem 0.75rem;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .category-card {
+    padding: 1.5rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .icon-wrapper {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+  }
+
+  .icon-wrapper svg {
+    width: 24px;
+    height: 24px;
   }
 }

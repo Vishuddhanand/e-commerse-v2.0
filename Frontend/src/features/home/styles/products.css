@@ -2,6 +2,7 @@
 .products {
   padding: 5rem 2rem;
   background: #f8fafc;
+  overflow: hidden;
 }
 
 /* Header Styling */
@@ -156,5 +157,25 @@
 
   .product-img {
     height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .products {
+    padding: 2.5rem 0.75rem;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 0;
+  }
+
+  .section-header h2 {
+    font-size: 1.6rem;
+  }
+
+  .product-card {
+    padding: 1.25rem;
   }
 }

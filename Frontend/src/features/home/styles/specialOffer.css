@@ -199,3 +199,33 @@
     font-size: 0.8rem;
   }
 }
+
+@media (max-width: 480px) {
+  .special {
+    padding: 2.5rem 0.75rem;
+  }
+
+  .special-card {
+    padding: 2rem 1rem;
+    gap: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .special-img-wrapper {
+    padding: 1.5rem;
+  }
+
+  .special-info h3 {
+    font-size: 1.3rem;
+  }
+
+  .special-info p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .special-btn {
+    padding: 0.9rem 2rem;
+    font-size: 1rem;
+  }
+}
