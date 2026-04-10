@@ -180,6 +180,105 @@
   transform: translateY(-1px);
 }
 
+/* MOBILE MENU BASE STYLES */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1002;
+}
+
+.hamburger-line {
+  width: 30px;
+  height: 3px;
+  background: var(--nav-text);
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  transform-origin: 1px;
+}
+.hamburger.active .hamburger-line:nth-child(1) { transform: rotate(45deg); }
+.hamburger.active .hamburger-line:nth-child(2) { opacity: 0; transform: translateX(20px); }
+.hamburger.active .hamburger-line:nth-child(3) { transform: rotate(-45deg); }
+
+.mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 998;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+.mobile-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 320px;
+  height: 100vh;
+  background: var(--nav-bg);
+  box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+  z-index: 1001;
+  padding: 5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+.mobile-drawer.open {
+  right: 0;
+}
+
+.drawer-close-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.drawer-close-btn:hover { color: var(--primary-btn); }
+
+.mobile-nav-links, .mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.mobile-link {
+  color: var(--nav-text);
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.mobile-link:hover { color: var(--nav-text-hover); }
+
+.mobile-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  margin: 1.5rem 0;
+}
+.mobile-lang-switcher {
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
 /* RESPONSIVE DESIGN */
 @media (max-width: 900px) {
   .navbar {

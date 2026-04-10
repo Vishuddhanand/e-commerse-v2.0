@@ -1,0 +1,169 @@
+{
+  "navbar": {
+    "home": "Home",
+    "products": "Products",
+    "categories": "Categories",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "cart": "Cart",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "hero": {
+    "title": "Shree Krishna Enterprises",
+    "subtitle": "Leading Manufacturer of Rubber Parts",
+    "description": "Best quality aftermarket and OEM rubber parts for all two-wheeler models.",
+    "downloadCatalog": "Download Catalog"
+  },
+  "products": {
+    "sectionTitle": "Latest Products",
+    "perItem": "Per Item"
+  },
+  "categories": {
+    "sectionTitle": "Shop by Category",
+    "twoWheelerParts": "Two-Wheeler Parts",
+    "rubberBushes": "Rubber Bushes",
+    "petrolPipes": "Petrol Pipes",
+    "brakeClutch": "Brake / Clutch Parts"
+  },
+  "specialOffer": {
+    "sectionTitle": "Special Offer",
+    "limitedTime": "Limited Time",
+    "featuredTitle": "Featured: Splendor Drum Rubber Set",
+    "featuredDescription": "Get exclusive lock-in pricing for bulk orders. Maximize margins with OEM quality for bike workshops, distributors, and resellers.",
+    "contactForBulk": "Contact for Bulk Rate"
+  },
+  "about": {
+    "sectionTitle": "About Us",
+    "leadText": "<strong>Shree Krishna Enterprises</strong> is a trusted manufacturer and supplier of high-quality two-wheeler spare parts and rubber components.",
+    "description": "Established in 2010, we specialize in products like Splendor Drum Rubber, Activa Air Pipe, and Brake accessories that meet strict OEM standards. Based in Pune, Maharashtra, we are committed to providing highly durable parts with reliable service to workshops and dealers across India.",
+    "yearsExperience": "Years Experience",
+    "qualityStandard": "Quality Standard",
+    "manufacturingHub": "Manufacturing Hub",
+    "since": "Since"
+  },
+  "testimonials": {
+    "sectionTitle": "What Our Customers Say",
+    "reviews": [
+      { "text": "Best quality drum rubbers! Fast service and genuine prices.", "name": "Auto Parts Dealer" },
+      { "text": "One-stop shop for all two-wheeler rubber parts. Highly recommended.", "name": "Workshop Owner" },
+      { "text": "Excellent product quality and fast delivery every time.", "name": "Bike Shop Owner" },
+      { "text": "Reliable parts supplier, great customer support.", "name": "Auto Repair Mechanic" },
+      { "text": "Competitive prices and genuine spare parts, highly recommended.", "name": "Motorbike Dealer" },
+      { "text": "Best rubber parts for two-wheelers, excellent quality.", "name": "Workshop Manager" }
+    ]
+  },
+  "faq": {
+    "sectionTitle": "Frequently Asked Questions",
+    "items": [
+      {
+        "question": "What kind of two-wheeler rubber parts do you manufacture?",
+        "answer": "We manufacture a wide range of OEM quality rubber components including Drum Rubbers (Splendor, Pulsar), Shocker Seals, Air Pipes (Activa), Air Filters, and Brake/Clutch parts for major two-wheeler brands."
+      },
+      {
+        "question": "Do you supply parts for wholesale or bulk orders?",
+        "answer": "Yes! We specialize in B2B wholesale distribution. Special discounts are available on bulk volume orders for bike workshops, local dealers, and resellers."
+      },
+      {
+        "question": "Are your rubber components compatible with all bike models?",
+        "answer": "Our components are precisely designed for specific models like Hero Honda, Pulsar, Activa, Enfield Bullet, and Unicorn. Check our product catalog for precise compatibility."
+      },
+      {
+        "question": "Do you ship across India?",
+        "answer": "Absolutely. Our manufacturing hub is in Pune, but our robust logistics network is capable of delivering safely packed bulk orders to workshops across India."
+      },
+      {
+        "question": "How can I request a sample or full product catalog?",
+        "answer": "You can download our full 2025 Price List directly from the homepage. Alternatively, for specific sample requests, contact Mr. Parth Bhojane via phone or email."
+      }
+    ]
+  },
+  "footer": {
+    "brandName": "Shree Krishna Enterprises",
+    "address": "Gat No. 1780, Chakan - Shikrapur Road, Shel Pimpalgaon, Pune, Maharashtra - 410501",
+    "quickLinks": "Quick Links",
+    "home": "Home",
+    "products": "Products",
+    "categories": "Categories",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "contactUs": "Contact Us",
+    "phone": "Phone",
+    "email": "Email",
+    "copyright": "Shree Krishna Enterprises. All rights reserved."
+  },
+  "auth": {
+    "brandName": "Shree Krishna Enterprises",
+    "loginTitle": "Welcome Back",
+    "loginSubtitle": "Sign in to your account",
+    "registerTitle": "Create Account",
+    "registerSubtitle": "Join us today",
+    "username": "Username",
+    "emailLabel": "Email",
+    "password": "Password",
+    "loginBtn": "Sign In",
+    "registerBtn": "Create Account",
+    "or": "or",
+    "googleLogin": "Continue with Google",
+    "noAccount": "Don't have an account?",
+    "register": "Register",
+    "haveAccount": "Already have an account?",
+    "loginLink": "Login",
+    "profileTitle": "User Profile",
+    "profileSubtitle": "Manage your account information",
+    "logoutBtn": "Logout"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "itemCount": "{{count}} Items in your Cart",
+    "emptyTitle": "Your Cart is Empty",
+    "emptySubtitle": "Looks like you haven't added anything yet.",
+    "continueShopping": "Continue Shopping",
+    "quantity": "Quantity",
+    "remove": "Remove",
+    "buyNow": "Buy Now",
+    "orderSummary": "Order Summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "free": "Free",
+    "total": "Total",
+    "placeOrder": "Place Order on WhatsApp",
+    "secureCheckout": "Secure Checkout"
+  },
+  "order": {
+    "quantity": "Quantity",
+    "placeOrder": "Place Order (COD)",
+    "addToCart": "Add to Cart",
+    "formTitle": "Complete Your Order",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "address": "Delivery Address",
+    "whatsappOrder": "Place Order on WhatsApp",
+    "thankYouTitle": "Thank You!",
+    "thankYouMessage": "Your order has been placed successfully. You will be redirected to WhatsApp to confirm order details."
+  },
+  "orderHistory": {
+    "title": "Order History",
+    "subtitle": "Track all your previous orders",
+    "emptyTitle": "No Orders Yet",
+    "emptySubtitle": "You haven't placed any orders yet.",
+    "orderId": "Order ID",
+    "items": "Items",
+    "total": "Total",
+    "status": "Status",
+    "shippingAddress": "Shipping Address"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "subtitle": "Manage customer orders and status",
+    "orderId": "Order ID",
+    "customer": "Customer",
+    "items": "Items",
+    "total": "Total",
+    "status": "Status",
+    "actions": "Actions"
+  }
+}

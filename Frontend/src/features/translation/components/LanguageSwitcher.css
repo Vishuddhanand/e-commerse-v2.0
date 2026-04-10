@@ -1,0 +1,40 @@
+.language-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.language-btn {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  appearance: none; /* remove default dropdown arrow */
+  transition: all 0.3s ease;
+  min-width: 65px;
+  text-align: center;
+  
+  /* Custom modern slick arrow */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.35rem center;
+  background-size: 1rem;
+  padding-right: 1.7rem;
+}
+
+.language-btn:hover, .language-btn:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.language-btn option {
+  background-color: #23272d; /* matching dark theme bg */
+  color: #fff;
+  padding: 10px;
+}
