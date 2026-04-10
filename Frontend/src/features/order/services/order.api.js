@@ -33,3 +33,8 @@ export async function updateOrderStatus(orderId, status) {
     const response = await api.patch(`/api/orders/admin/status/${orderId}`, { status });
     return response.data;
 }
+
+export async function deleteOrder(orderId) {
+    const response = await api.delete(`/api/orders/admin/delete/${orderId}`);
+    return response.data;
+}

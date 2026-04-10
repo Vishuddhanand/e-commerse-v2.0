@@ -10,11 +10,12 @@ const Register = () => {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [adminKey, setAdminKey] = useState("")
 
   async function handleSubmit(e) {
     e.preventDefault()
     try {
-      await handleRegister({ username, email, password })
+      await handleRegister({ username, email, password, adminKey })
       navigate("/")
     } catch (err) {
       // Error handled in useAuth
@@ -50,6 +51,11 @@ const Register = () => {
           <div className="form-group">
             <label>Password</label>
             <input type="password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          </div>
+
+          <div className="form-group">
+            <label>Admin Key (optional)</label>
+            <input type="password" placeholder="Enter admin key if applicable" value={adminKey} onChange={(e) => setAdminKey(e.target.value)} />
           </div>
 
           <button type="submit" className="register-btn" disabled={loading}>

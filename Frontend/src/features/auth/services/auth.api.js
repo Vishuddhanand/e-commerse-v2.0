@@ -13,11 +13,12 @@ api.interceptors.request.use((config) => {
     return config
 })
 
-export async function register({ username, email, password }) {
+export async function register({ username, email, password, adminKey }) {
     const response = await api.post("/api/auth/register", {
         username,
         email,
-        password
+        password,
+        adminKey
     })
     return response.data
 }

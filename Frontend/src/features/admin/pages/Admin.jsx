@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllOrders, updateOrderStatus } from '../../order/services/order.api';
+import { getAllOrders, updateOrderStatus, deleteOrder } from '../../order/services/order.api';
 import Navbar from '../../home/components/Navbar';
 import { toast } from 'react-hot-toast';
 import '../styles/admin.css';
@@ -31,6 +31,18 @@ const Admin = () => {
             setOrders(prev => prev.map(o => o._id === orderId ? { ...o, status: newStatus } : o));
         } catch (err) {
             toast.error("Status update failed");
+        }
+    };
+
+    const handleDeleteOrder = async (orderId) => {
+        if (!window.confirm("Are you sure you want to completely delete this order? This action cannot be undone.")) return;
+        
+        try {
+            await deleteOrder(orderId);
+            toast.success("Order removed successfully!");
+            setOrders(prev => prev.filter(o => o._id !== orderId));
+        } catch (err) {
+            toast.error("Failed to delete order");
         }
     };
 
@@ -76,17 +88,36 @@ const Admin = () => {
                                         </span>
                                     </td>
                                     <td>
-                                        <select
-                                            value={order.status}
-                                            onChange={(e) => handleStatusUpdate(order._id, e.target.value)}
-                                            className="status-select"
-                                        >
-                                            <option value="Pending">Pending</option>
-                                            <option value="Confirmed">Confirmed</option>
-                                            <option value="Shipped">Shipped</option>
-                                            <option value="Delivered">Delivered</option>
-                                            <option value="Cancelled">Cancelled</option>
-                                        </select>
+                                        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                                            <select
+                                                value={order.status}
+                                                onChange={(e) => handleStatusUpdate(order._id, e.target.value)}
+                                                className="status-select"
+                                            >
+                                                <option value="Pending">Pending</option>
+                                                <option value="Confirmed">Confirmed</option>
+                                                <option value="Shipped">Shipped</option>
+                                                <option value="Delivered">Delivered</option>
+                                                <option value="Cancelled">Cancelled</option>
+                                            </select>
+                                            <button 
+                                                onClick={() => handleDeleteOrder(order._id)}
+                                                title="Delete Order"
+                                                style={{
+                                                    background: "rgba(255, 77, 77, 0.1)",
+                                                    border: "1px solid rgba(255, 77, 77, 0.3)",
+                                                    color: "#ff4d4d",
+                                                    borderRadius: "6px",
+                                                    padding: "6px 10px",
+                                                    cursor: "pointer",
+                                                    transition: "all 0.2s"
+                                                }}
+                                                onMouseOver={(e) => { e.currentTarget.style.background = "#ff4d4d"; e.currentTarget.style.color = "#fff"; }}
+                                                onMouseOut={(e) => { e.currentTarget.style.background = "rgba(255, 77, 77, 0.1)"; e.currentTarget.style.color = "#ff4d4d"; }}
+                                            >
+                                                🗑️
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { addToCart } from '../../cart/services/cart.api';
+import { createOrder } from '../../order/services/order.api';
 import '../styles/order.css';
 import products from '../../../data/product';
 import { useAuth } from '../../auth/hooks/useAuth';
@@ -80,11 +81,32 @@ const Order = () => {
   };
 
   // Fixed WhatsApp message
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const { userName, userPhone, userAddress } = formData;
     const total = productInfo.price * quantity;
+
+    try {
+      await createOrder({
+        userName,
+        userPhone,
+        userAddress,
+        products: [
+          {
+            productId: String(productInfo.id),
+            name: productInfo.name,
+            price: productInfo.price,
+            quantity: quantity,
+            total: total
+          }
+        ],
+        totalAmount: total
+      });
+    } catch (err) {
+      toast.error('Failed to save order to history. Please try again.');
+      return;
+    }
 
     const message = `New Order - Shree Krishna Enterprises
 

@@ -1,4 +1,3 @@
-const { parse } = require("dotenv");
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
@@ -25,7 +24,7 @@ const userSchema = new mongoose.Schema(
     },
     googleId: {
       type: String,
-      parse: true
+      sparse: true
     },
     role: {
       type: String,

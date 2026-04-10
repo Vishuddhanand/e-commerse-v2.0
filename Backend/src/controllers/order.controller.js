@@ -45,10 +45,7 @@ async function getUserOrders(req, res) {
 
 async function getAllOrders(req, res) {
   try {
-    // Check if user is admin (this check can also be in middleware)
-    if (req.user.role !== 'admin') {
-      return res.status(403).json({ message: "Access denied. Admins only." });
-    }
+    // Admin check handled by middleware
 
     const orders = await Order.find().populate('user', 'username email').sort({ createdAt: -1 });
     res.json(orders);
@@ -60,9 +57,7 @@ async function getAllOrders(req, res) {
 
 async function updateOrderStatus(req, res) {
   try {
-    if (req.user.role !== 'admin') {
-      return res.status(403).json({ message: "Access denied. Admins only." });
-    }
+    // Admin check handled by middleware
 
     const { id } = req.params;
     const { status } = req.body;
@@ -77,9 +72,23 @@ async function updateOrderStatus(req, res) {
   }
 }
 
+async function deleteOrder(req, res) {
+  try {
+    const { id } = req.params;
+    const deletedOrder = await Order.findByIdAndDelete(id);
+    if (!deletedOrder) return res.status(404).json({ message: "Order not found" });
+    
+    res.json({ message: "Order deleted successfully" });
+  } catch (err) {
+    console.error("deleteOrder error:", err.message);
+    res.status(500).json({ message: "Failed to delete order", error: err.message });
+  }
+}
+
 module.exports = {
   createOrder,
   getUserOrders,
   getAllOrders,
-  updateOrderStatus
+  updateOrderStatus,
+  deleteOrder
 };

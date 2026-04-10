@@ -8,10 +8,10 @@ export const useAuth = () => {
     const context = useContext(AuthContext)
     const { user, setUser, loading, setLoading } = context
 
-    async function handleRegister({ username, email, password }) {
+    async function handleRegister({ username, email, password, adminKey }) {
         setLoading(true)
         try {
-            const data = await register({ username, email, password })
+            const data = await register({ username, email, password, adminKey })
             setUser(data.user)
             if (data.token) localStorage.setItem("token", data.token)
             toast.success("Account created successfully!")

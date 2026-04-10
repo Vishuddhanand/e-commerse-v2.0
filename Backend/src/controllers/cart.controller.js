@@ -19,7 +19,7 @@ async function addToCart(req, res) {
       });
     } else {
       const itemIndex = cart.items.findIndex(
-        item => String(item.productId) === String(productId)  // ✅ compare as strings
+        item => String(item.productId) === String(productId)  // compare as strings
       );
 
       if (itemIndex > -1) {

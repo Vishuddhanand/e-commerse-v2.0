@@ -3,82 +3,100 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 async function registerController(req, res) {
-    const { username, email, password } = req.body;
-    const isUserAlreadyExist = await userModel.findOne({
-        $or: [
-            { username },
-            { email }
-        ]
-    })
+    try {
+        const { username, email, password, adminKey } = req.body;
 
-    if (isUserAlreadyExist) {
-        return res.status(400).json({
-            message: "User with the same username or email already exists"
+        const isUserAlreadyExist = await userModel.findOne({
+            $or: [{ username }, { email }]
+        })
+
+        if (isUserAlreadyExist) {
+            return res.status(400).json({
+                message: "User with the same username or email already exists"
+            })
+        }
+
+        const hash = await bcrypt.hash(password, 10);
+
+        const isAdmin = adminKey && adminKey === process.env.ADMIN_SECRET_KEY;
+
+        const user = await userModel.create({
+            username,
+            email,
+            password: hash,
+            role: isAdmin ? "admin" : "user"
+        })
+
+        const token = jwt.sign({
+            id: user._id,
+            username: user.username,
+            role: user.role
+        }, process.env.JWT_SECRET, { expiresIn: "1d" })
+
+        res.cookie("token", token)
+
+        res.status(201).json({
+            message: "User registered successfully",
+            token,
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                role: user.role
+            }
+        })
+    } catch (err) {
+        res.status(500).json({
+            message: "Registration failed",
+            error: err.message
         })
     }
-
-    const hash = await bcrypt.hash(password, 10);
-
-    const user = await userModel.create({
-        username,
-        email,
-        password: hash
-    })
-
-    const token = jwt.sign({
-        id: user._id,
-        username: user.username
-    }, process.env.JWT_SECRET, { expiresIn: "1d" })
-
-    res.cookie("token", token)
-
-    res.status(201).json({
-        message: "User registered successfully",
-        token,
-        user: {
-            username: user.username,
-            email: user.email
-        }
-    })
 }
 
 async function loginController(req, res) {
-    const { email, password } = req.body;
+    try {
+        const { email, password } = req.body;
 
-    const user = await userModel.findOne({
-        email
-    }).select("+password")
+        const user = await userModel.findOne({ email }).select("+password")
 
-    if (!user) {
-        return res.status(400).json({
-            message: "Invalid email or password"
-        })
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password)
-
-    if (!isMatch) {
-        return res.status(400).json({
-            message: "Invalid email or password"
-        })
-    }
-
-    const token = jwt.sign({
-        id: user._id,
-        username: user.username
-    }, process.env.JWT_SECRET, { expiresIn: "1d" })
-
-    res.cookie("token", token)
-
-    res.status(200).json({
-        message: "User logged in successfully",
-        token,
-        user: {
-            username: user.username,
-            email: user.email
+        if (!user) {
+            return res.status(400).json({
+                message: "Invalid email or password"
+            })
         }
-    })
 
+        const isMatch = await bcrypt.compare(password, user.password)
+
+        if (!isMatch) {
+            return res.status(400).json({
+                message: "Invalid email or password"
+            })
+        }
+
+        const token = jwt.sign({
+            id: user._id,
+            username: user.username,
+            role: user.role
+        }, process.env.JWT_SECRET, { expiresIn: "1d" })
+
+        res.cookie("token", token)
+
+        res.status(200).json({
+            message: "User logged in successfully",
+            token,
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                role: user.role
+            }
+        })
+    } catch (err) {
+        res.status(500).json({
+            message: "Login failed",
+            error: err.message
+        })
+    }
 }
 
 async function googleCallbackController(req, res) {
@@ -88,7 +106,8 @@ async function googleCallbackController(req, res) {
         const token = jwt.sign(
             {
                 id: user._id,
-                username: user.username
+                username: user.username,
+                role: user.role
             },
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
@@ -98,7 +117,6 @@ async function googleCallbackController(req, res) {
             httpOnly: true
         });
 
-        // redirect to frontend
         res.redirect(`http://localhost:5173/auth/success?token=${token}`);
 
     } catch (err) {
@@ -116,7 +134,7 @@ function logoutController(req, res) {
 
 async function getMeController(req, res) {
     try {
-        const userId = req.user.id; // from JWT middleware
+        const userId = req.user.id;
 
         const user = await userModel.findById(userId).select("-password");
 
@@ -138,8 +156,6 @@ async function getMeController(req, res) {
         });
     }
 }
-
-
 
 module.exports = {
     registerController,
