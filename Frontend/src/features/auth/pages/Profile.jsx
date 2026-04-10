@@ -1,14 +1,17 @@
 import React from 'react';
 import { useAuth } from '../hooks/useAuth';
-import '../styles/login.css'; // Reusing some login styles or adding new ones
+import '../styles/login.css';
+import '../styles/profile.css';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Profile = () => {
     const { user, loading, handleLogout } = useAuth();
     const navigate = useNavigate()
+    const { t } = useTranslation();
 
     if (loading) {
-        return <div className="profile-container" style={{textAlign: 'center', padding: '50px'}}>Loading profile...</div>;
+        return <div className="login-page"><div className="login-container profile-wrapper" style={{textAlign: 'center'}}>Loading...</div></div>;
     }
 
     if (!user) {
@@ -16,36 +19,35 @@ const Profile = () => {
     }
 
     return (
-        <div className="login-page"> {/* Reusing page wrapper for background */}
-            <div className="login-container" style={{ maxWidth: '600px' }}>
+        <div className="login-page">
+            <div className="login-container profile-wrapper">
                 <div className="login-header">
-                    <div className="brand-name">Shree Krishna Enterprises</div>
-                    <h1>User Profile</h1>
-                    <p>Manage your account information</p>
+                    <div className="brand-name">{t('auth.brandName')}</div>
+                    <h1>{t('auth.profileTitle')}</h1>
+                    <p>{t('auth.profileSubtitle')}</p>
                 </div>
 
-                <div className="profile-content" style={{ marginTop: '20px' }}>
-                    <div className="profile-info-group" style={{ marginBottom: '15px' }}>
-                        <label style={{ fontWeight: 'bold', display: 'block', color: '#666' }}>Username</label>
-                        <div style={{ fontSize: '1.2rem', padding: '10px', background: '#f9f9f9', borderRadius: '8px' ,color: '#000' }}>
+                <div className="profile-content">
+                    <div className="profile-info-group">
+                        <label>{t('auth.username')}</label>
+                        <div className="profile-info-value">
                             {user.username}
                         </div>
                     </div>
 
-                    <div className="profile-info-group" style={{ marginBottom: '15px' }}>
-                        <label style={{ fontWeight: 'bold', display: 'block', color: '#666' }}>Email</label>
-                        <div style={{ fontSize: '1.2rem', padding: '10px', background: '#f9f9f9', borderRadius: '8px', color: '#000' }}>
+                    <div className="profile-info-group">
+                        <label>{t('auth.emailLabel')}</label>
+                        <div className="profile-info-value">
                             {user.email}
                         </div>
                     </div>
 
-                    <div className="profile-actions" style={{ marginTop: '30px', display: 'flex', gap: '10px' }}>
+                    <div className="profile-actions">
                         <button 
-                            className="login-btn" 
-                            style={{ background: '#ff4444' }} 
+                            className="profile-logout-btn" 
                             onClick={handleLogout}
                         >
-                            Log Out
+                            {t('auth.logoutBtn')}
                         </button>
                     </div>
                 </div>

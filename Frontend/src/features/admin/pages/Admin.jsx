@@ -73,21 +73,21 @@ const Admin = () => {
                         <tbody>
                             {orders.map(order => (
                                 <tr key={order._id}>
-                                    <td>#{order._id.slice(-6).toUpperCase()}</td>
-                                    <td>
+                                    <td data-label="Order ID">#{order._id.slice(-6).toUpperCase()}</td>
+                                    <td data-label="Customer">
                                         <div className="customer-info">
                                             <strong>{order.userName}</strong>
                                             <span>{order.userPhone}</span>
                                         </div>
                                     </td>
-                                    <td>{order.products.length} Items</td>
-                                    <td>₹{order.totalAmount.toFixed(2)}</td>
-                                    <td>
+                                    <td data-label="Items">{order.products.length} Items</td>
+                                    <td data-label="Total">₹{order.totalAmount.toFixed(2)}</td>
+                                    <td data-label="Status">
                                         <span className={`status-pill ${order.status.toLowerCase()}`}>
                                             {order.status}
                                         </span>
                                     </td>
-                                    <td>
+                                    <td data-label="Actions">
                                         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
                                             <select
                                                 value={order.status}

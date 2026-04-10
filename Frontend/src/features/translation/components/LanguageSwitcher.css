@@ -49,3 +49,17 @@
   background-color: var(--nav-bg, rgba(35, 39, 45, 0.95));
   color: #fff;
 }
+
+/* Mobile — ensure adequate touch target size (min 44x44px) */
+@media (max-width: 768px) {
+  .language-btn {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px 24px 8px 10px;
+    font-size: 0.95rem;
+  }
+
+  .language-switcher::after {
+    right: 8px;
+  }
+}

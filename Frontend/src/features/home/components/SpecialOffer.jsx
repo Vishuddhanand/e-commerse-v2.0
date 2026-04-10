@@ -1,26 +1,28 @@
 import React from 'react';
 import '../styles/specialOffer.css';
+import { useTranslation } from 'react-i18next';
 
 const SpecialOffer = () => {
+    const { t } = useTranslation();
     return (
         <section className="special">
             <div className="section-header">
-                <h2>Special Offer</h2>
+                <h2>{t('specialOffer.sectionTitle')}</h2>
                 <div className="header-underline"></div>
             </div>
             
             <div className="special-content">
                 <div className="special-card">
-                    <div className="special-badge">Limited Time</div>
+                    <div className="special-badge">{t('specialOffer.limitedTime')}</div>
                     
                     <div className="special-img-wrapper">
                         <img src="/assets/splendor-drum-rubber-1000x1000.webp" alt="Splendor Drum Rubber Set" className="special-img" />
                     </div>
                     
                     <div className="special-info">
-                        <h3>Featured: Splendor Drum Rubber Set</h3>
-                        <p>Get special locked-in pricing on bulk orders. Essential for bike workshops, distributors, and resellers looking to maximize margins with OEM quality stock.</p>
-                        <a href="#footer" className="btn special-btn">Contact for Bulk Rate</a>
+                        <h3>{t('specialOffer.featuredTitle')}</h3>
+                        <p>{t('specialOffer.featuredDescription')}</p>
+                        <a onClick={(e) => { e.preventDefault(); document.getElementById('footer')?.scrollIntoView({ behavior: 'smooth' }); }} className="btn special-btn" style={{cursor: 'pointer'}}>{t('specialOffer.contactForBulk')}</a>
                     </div>
                 </div>
             </div>

@@ -1,12 +1,14 @@
 import React from 'react';
 import '../styles/products.css';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Products = () => {
+    const { t } = useTranslation();
     return (
         <section id="products" className="products">
             <div className="section-header">
-                <h2>Latest Products</h2>
+                <h2>{t('products.sectionTitle')}</h2>
                 <div className="header-underline"></div>
             </div>
             

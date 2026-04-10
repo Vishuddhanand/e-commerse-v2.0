@@ -1,39 +1,37 @@
 import React from 'react';
 import '../styles/about.css';
+import { useTranslation, Trans } from 'react-i18next';
 
 const About = () => {
+    const { t } = useTranslation();
     return (
         <section id="about" className="about">
             <div className="about-container">
                 <div className="about-content">
                     <div className="section-header align-left">
-                        <h2>About Us</h2>
+                        <h2>{t('about.sectionTitle')}</h2>
                         <div className="header-underline"></div>
                     </div>
                     
                     <p className="lead-text">
-                        <strong>Shree Krishna Enterprises</strong> is a trusted manufacturer and supplier of high-quality two-wheeler spare parts
-                        and rubber components.
+                        <Trans i18nKey="about.leadText">
+                            <strong>Shree Krishna Enterprises</strong> is a trusted manufacturer and supplier of high-quality two-wheeler spare parts and rubber components.
+                        </Trans>
                     </p>
-                    <p>
-                        Founded in 2010, we specialize in products like Splendor drum rubbers, Activa air
-                        pipes, and brake accessories that meet strict OEM standards. Located in Pune, Maharashtra, we are committed to
-                        delivering highly durable parts with reliable service to workshops and dealers across India. Our ongoing focus remains on
-                        product quality, customer satisfaction, and continuous improvement to support the growing aftermarket industry.
-                    </p>
+                    <p>{t('about.description')}</p>
                     
                     <div className="about-stats">
                         <div className="stat-item">
                             <h4>15+</h4>
-                            <span>Years Experience</span>
+                            <span>{t('about.yearsExperience')}</span>
                         </div>
                         <div className="stat-item">
                             <h4>OEM</h4>
-                            <span>Quality Standard</span>
+                            <span>{t('about.qualityStandard')}</span>
                         </div>
                         <div className="stat-item">
-                            <h4>Pune</h4>
-                            <span>Manufacturing Hub</span>
+                            <h4>{t('about.manufacturingHub') === 'Manufacturing Hub' ? 'Pune' : 'पुणे'}</h4>
+                            <span>{t('about.manufacturingHub')}</span>
                         </div>
                     </div>
                 </div>
@@ -41,7 +39,7 @@ const About = () => {
                 <div className="about-image-wrapper">
                      <div className="about-img-box">
                          <img src="/assets/generated-image.png" alt="Shree Krishna Enterprises Manufacturing" />
-                         <div className="experience-badge">Since<br/>2010</div>
+                         <div className="experience-badge">{t('about.since')}<br/>2010</div>
                      </div>
                 </div>
             </div>

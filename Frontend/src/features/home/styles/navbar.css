@@ -214,18 +214,26 @@
   transform-origin: center;
 }
 
-/* Hamburger → X animation */
-.hamburger.active .hamburger-line:nth-child(1) {
-  transform: translateY(7.5px) rotate(45deg);
+/* Drawer Close Button */
+.drawer-close-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  color: var(--nav-text);
+  cursor: pointer;
+  z-index: 1060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
-.hamburger.active .hamburger-line:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-
-.hamburger.active .hamburger-line:nth-child(3) {
-  transform: translateY(-7.5px) rotate(-45deg);
+.drawer-close-btn:hover {
+  transform: scale(1.1);
+  color: #ff9800;
 }
 
 /* ========================================

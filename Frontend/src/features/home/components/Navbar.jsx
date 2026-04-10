@@ -121,6 +121,11 @@ const Navbar = () => {
 
       {/* Mobile slide-out drawer */}
       <div className={`mobile-drawer ${menuOpen ? 'open' : ''}`}>
+        
+        {/* Explicit Close Button inside the drawer */}
+        <button className="drawer-close-btn" onClick={closeMenu} aria-label="Close menu">
+          ✕
+        </button>
 
         {/* Mobile nav links */}
         <div className="mobile-nav-links">

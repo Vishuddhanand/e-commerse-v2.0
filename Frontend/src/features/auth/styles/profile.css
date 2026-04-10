@@ -1,0 +1,82 @@
+/* ===== PROFILE PAGE ===== */
+/* Extends login-page styles as the wrapper */
+
+.profile-wrapper {
+    max-width: 600px;
+}
+
+.profile-content {
+    margin-top: 1.5rem;
+}
+
+.profile-info-group {
+    margin-bottom: 1.25rem;
+}
+
+.profile-info-group label {
+    font-weight: 700;
+    display: block;
+    color: #6b7280;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.profile-info-value {
+    font-size: 1.15rem;
+    padding: 0.85rem 1.2rem;
+    background: #f9fafb;
+    border-radius: 12px;
+    color: #1f2937;
+    border: 2px solid #e5e7eb;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+.profile-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.profile-logout-btn {
+    width: 100%;
+    padding: 0.95rem;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.profile-logout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.profile-logout-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .profile-wrapper {
+        max-width: 100%;
+    }
+
+    .profile-info-value {
+        font-size: 1rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .profile-actions {
+        flex-direction: column;
+    }
+}
