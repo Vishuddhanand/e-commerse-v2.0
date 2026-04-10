@@ -94,82 +94,10 @@ const Navbar = () => {
                 />
               </Link>
 
-              {/* <button onClick={handleLogout} className="btn-logout">Logout</button> */}
-            </div>
-          )}
-        </div>
+            {/* <button onClick={handleLogout} className="btn-logout">Logout</button> */}
+          </div>
+        )}
 
-        {/* Hamburger button — visible only on mobile */}
-        <button
-          className={`hamburger ${menuOpen ? 'active' : ''}`}
-          onClick={toggleMenu}
-          aria-label="Toggle navigation menu"
-          aria-expanded={menuOpen}
-        >
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-        </button>
-
-      </nav>
-
-      {/* Mobile overlay */}
-      <div
-        className={`mobile-overlay ${menuOpen ? 'visible' : ''}`}
-        onClick={closeMenu}
-      />
-
-      {/* Mobile slide-out drawer */}
-      <div className={`mobile-drawer ${menuOpen ? 'open' : ''}`}>
-        
-        {/* Explicit Close Button inside the drawer */}
-        <button className="drawer-close-btn" onClick={closeMenu} aria-label="Close menu">
-          ✕
-        </button>
-
-        {/* Mobile nav links */}
-        <div className="mobile-nav-links">
-          <span className="mobile-link" onClick={() => scrollToSection('home')}>{t('navbar.home')}</span>
-          <span className="mobile-link" onClick={() => scrollToSection('products')}>{t('navbar.products')}</span>
-          <span className="mobile-link" onClick={() => scrollToSection('categories')}>{t('navbar.categories')}</span>
-          <span className="mobile-link" onClick={() => scrollToSection('about')}>{t('navbar.about')}</span>
-          <span className="mobile-link" onClick={() => scrollToSection('footer')}>{t('navbar.contact')}</span>
-        </div>
-
-        <div className="mobile-divider"></div>
-
-        {/* Mobile user actions */}
-        <div className="mobile-actions">
-          {!user ? (
-            <Link to="/login" className="mobile-link" onClick={closeMenu}>
-              {t('navbar.login')}
-            </Link>
-          ) : (
-            <>
-              {user.role === 'admin' && (
-                <Link to="/admin" className="mobile-link" onClick={closeMenu}>
-                  {t('navbar.dashboard')}
-                </Link>
-              )}
-              <Link to="/order-history" className="mobile-link" onClick={closeMenu}>
-                {t('navbar.orders')}
-              </Link>
-              <Link to="/cart" className="mobile-link" onClick={closeMenu}>
-                🛒 Cart
-              </Link>
-              <Link to="/profile" className="mobile-link" onClick={closeMenu}>
-                👤 Profile
-              </Link>
-            </>
-          )}
-        </div>
-
-        <div className="mobile-divider"></div>
-
-        {/* Language switcher in mobile drawer */}
-        <div className="mobile-lang-switcher">
-          <LanguageSwitcher />
-        </div>
       </div>
     </>
   )
