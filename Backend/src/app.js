@@ -2,6 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const cors = require("cors");
+const path = require("path");
 
 const passport = require("./services/passport"); 
 const authRouter = require("./routes/auth.routes");
@@ -9,6 +10,7 @@ const cartRouter = require("./routes/cart.routes");
 const orderRouter = require("./routes/order.routes");
 
 const app = express();
+app.use(express.static("./public"));
 
 app.use(express.json());
 app.use(cookieParser());
@@ -32,5 +34,9 @@ app.use(passport.session());
 app.use("/api/auth", authRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/orders", orderRouter);
+
+app.use('*name', (req, res) => {
+  res.sendFile(path.join(__dirname,"..", "public/index.html"));
+});
 
 module.exports = app;

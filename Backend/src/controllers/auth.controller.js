@@ -166,7 +166,7 @@ async function googleCallbackController(req, res) {
             httpOnly: true
         });
 
-        res.redirect(`http://localhost:5173/auth/success?token=${token}`);
+        res.redirect(`http://localhost:3000/auth/success?token=${token}`);
 
     } catch (err) {
         res.status(500).json({
