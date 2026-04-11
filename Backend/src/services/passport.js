@@ -19,12 +19,22 @@ async (accessToken, refreshToken, profile, done) => {
                 username: profile.displayName,
                 email: profile.emails[0].value,
                 googleId: profile.id,
+                picture: profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null,
                 verified: true
             });
-        } else if (!user.verified) {
-            // If they registered normally but never verified, Google login verifies them
-            user.verified = true;
-            await user.save();
+        } else {
+            let needsSave = false;
+            if (!user.verified) {
+                user.verified = true;
+                needsSave = true;
+            }
+            if (profile.photos && profile.photos.length > 0 && user.picture !== profile.photos[0].value) {
+                user.picture = profile.photos[0].value;
+                needsSave = true;
+            }
+            if (needsSave) {
+                await user.save();
+            }
         }
 
         return done(null, user);

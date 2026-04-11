@@ -84,14 +84,15 @@ const Navbar = () => {
               <Link to="/order-history" className="nav-link" title={t('navbar.orders')}>{t('navbar.orders')}</Link>
               <Link to="/cart" className="cart-icon" title="Cart">🛒</Link>
 
-              {/* Default Profile Image */}
+              {/* Profile Image / Avatar */}
               <Link to="/profile">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                  alt="profile"
-                  className="profile-icon"
-                  title="Profile"
-                />
+                {user.picture ? (
+                  <img src={user.picture} alt="profile" className="profile-icon" title="Profile" referrerPolicy="no-referrer" />
+                ) : (
+                  <div className="profile-icon profile-letter" title="Profile">
+                    {user.username ? user.username.charAt(0) : '?'}
+                  </div>
+                )}
               </Link>
 
               {/* <button onClick={handleLogout} className="btn-logout">Logout</button> */}
@@ -157,8 +158,15 @@ const Navbar = () => {
               <Link to="/cart" className="mobile-link" onClick={closeMenu}>
                 🛒 Cart
               </Link>
-              <Link to="/profile" className="mobile-link" onClick={closeMenu}>
-                👤 Profile
+              <Link to="/profile" className="mobile-link" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                {user.picture ? (
+                  <img src={user.picture} alt="profile" style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }} referrerPolicy="no-referrer" />
+                ) : (
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, #ff9800, #f57c00)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold', fontSize: '1.1rem', textTransform: 'uppercase' }}>
+                    {user.username ? user.username.charAt(0) : '?'}
+                  </div>
+                )}
+                Profile
               </Link>
             </>
           )}

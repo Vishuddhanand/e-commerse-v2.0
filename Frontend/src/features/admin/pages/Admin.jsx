@@ -63,8 +63,10 @@ const Admin = () => {
                         <thead>
                             <tr>
                                 <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Items</th>
+                                <th>Customer Name</th>
+                                <th>Mobile Number</th>
+                                <th>Delivery Address</th>
+                                <th>Products</th>
                                 <th>Total</th>
                                 <th>Status</th>
                                 <th>Actions</th>
@@ -74,13 +76,28 @@ const Admin = () => {
                             {orders.map(order => (
                                 <tr key={order._id}>
                                     <td data-label="Order ID">#{order._id.slice(-6).toUpperCase()}</td>
-                                    <td data-label="Customer">
+                                    <td data-label="Customer Name">
                                         <div className="customer-info">
                                             <strong>{order.userName}</strong>
-                                            <span>{order.userPhone}</span>
                                         </div>
                                     </td>
-                                    <td data-label="Items">{order.products.length} Items</td>
+                                    <td data-label="Mobile Number">
+                                        <span style={{ fontSize: '0.9rem', color: '#4b5563', fontWeight: '500' }}>{order.userPhone}</span>
+                                    </td>
+                                    <td data-label="Delivery Address">
+                                        <div style={{ fontSize: '0.85rem', color: '#4b5563', lineHeight: '1.4', minWidth: '150px' }}>
+                                            {order.userAddress ? order.userAddress : 'Not Provided'}
+                                        </div>
+                                    </td>
+                                    <td data-label="Products">
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                            {order.products.map((item, idx) => (
+                                                <div key={idx} style={{ fontSize: '0.85rem', color: '#374151' }}>
+                                                    • {item.name || 'Product'} <span style={{ color: '#6b7280', fontWeight: '600' }}>x{item.quantity}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </td>
                                     <td data-label="Total">₹{order.totalAmount.toFixed(2)}</td>
                                     <td data-label="Status">
                                         <span className={`status-pill ${order.status.toLowerCase()}`}>

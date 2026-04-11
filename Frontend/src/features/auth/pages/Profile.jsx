@@ -28,6 +28,16 @@ const Profile = () => {
                 </div>
 
                 <div className="profile-content">
+                    <div className="profile-avatar-container">
+                        <div className="profile-avatar">
+                            {user.picture ? (
+                                <img src={user.picture} alt="Profile" referrerPolicy="no-referrer" />
+                            ) : (
+                                <span>{user.username ? user.username.charAt(0) : '?'}</span>
+                            )}
+                        </div>
+                    </div>
+
                     <div className="profile-info-group">
                         <label>{t('auth.username')}</label>
                         <div className="profile-info-value">
