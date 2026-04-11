@@ -154,7 +154,7 @@ Shipping: ${shipping === 0 ? "Free" : `₹${shipping}`}
 Total: ₹${total.toFixed(2)}
 Payment: Cash on Delivery`;
 
-      const ownerNumber = "918149111602";
+      const ownerNumber = "919112162207";
       const whatsappUrl = `https://wa.me/${ownerNumber}?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, "_blank");
 

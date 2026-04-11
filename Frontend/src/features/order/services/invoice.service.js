@@ -13,7 +13,7 @@ export const generateInvoice = (order) => {
   doc.setFont("helvetica", "normal");
   doc.setTextColor(100, 100, 100);
   doc.text("123, Marketplace Road, Industrial Area, City", 105, 28, { align: "center" });
-  doc.text("Phone: +91 8149111602  |  Email: contact@shreekrishna.com", 105, 33, { align: "center" });
+  doc.text("Phone: +91 9112162207  |  Email: contact@shreekrishna.com", 105, 33, { align: "center" });
 
   // Divider
   doc.setDrawColor(200, 200, 200);
