@@ -213,9 +213,14 @@
   transition: all 0.3s linear;
   transform-origin: 1px;
 }
-.hamburger.active .hamburger-line:nth-child(1) { transform: rotate(45deg); }
-.hamburger.active .hamburger-line:nth-child(2) { opacity: 0; transform: translateX(20px); }
-.hamburger.active .hamburger-line:nth-child(3) { transform: rotate(-45deg); }
+
+.hamburger:focus {
+  outline: none;
+}
+
+.hamburger.active {
+  display: none;
+}
 
 .mobile-overlay {
   position: fixed;
@@ -230,6 +235,7 @@
   visibility: hidden;
   transition: all 0.3s ease-in-out;
 }
+
 .mobile-overlay.visible {
   opacity: 1;
   visibility: visible;
@@ -240,16 +246,20 @@
   top: 0;
   right: -100%;
   width: 320px;
+  max-width: 85vw;
   height: 100vh;
   background: var(--nav-bg);
-  box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
   z-index: 1001;
-  padding: 5rem 2rem 2rem;
+  padding: 5rem 2rem 5rem;
   display: flex;
   flex-direction: column;
   transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
+
 .mobile-drawer.open {
   right: 0;
 }
@@ -264,13 +274,18 @@
   font-size: 1.5rem;
   cursor: pointer;
 }
-.drawer-close-btn:hover { color: var(--primary-btn); }
 
-.mobile-nav-links, .mobile-actions {
+.drawer-close-btn:hover {
+  color: var(--primary-btn);
+}
+
+.mobile-nav-links,
+.mobile-actions {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
+
 .mobile-link {
   color: var(--nav-text);
   text-decoration: none;
@@ -278,16 +293,26 @@
   font-weight: 500;
   cursor: pointer;
 }
-.mobile-link:hover { color: var(--nav-text-hover); }
+
+.mobile-link:hover {
+  color: var(--nav-text-hover);
+}
 
 .mobile-divider {
   height: 1px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   margin: 1.5rem 0;
 }
+
 .mobile-lang-switcher {
-  margin-top: auto;
-  padding-top: 1.5rem;
+  padding-top: 0.5rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.mobile-lang-switcher .language-switcher {
+  justify-content: flex-start;
+  width: 100%;
 }
 
 /* RESPONSIVE DESIGN */
@@ -330,6 +355,8 @@
     width: 120px;
     height: 42px;
   }
+
+
 }
 
 /* Small phones */
