@@ -352,14 +352,20 @@ Payment: Cash on Delivery`;
 
               <div style={{ marginBottom: "1.5rem" }}>
                 <label style={{ fontSize: ".8rem", color: "#8a9099", display: "block", marginBottom: ".4rem" }}>Delivery Address</label>
-                <textarea
-                  value={checkoutForm.userAddress}
-                  onChange={e => setCheckoutForm(prev => ({ ...prev, userAddress: e.target.value }))}
-                  placeholder="Full delivery address"
-                  required
-                  rows={3}
-                  style={{ width: "100%", padding: ".75rem", background: "#2c3139", border: "1px solid #2e3440", borderRadius: "8px", color: "white", fontSize: ".9rem", resize: "vertical" }}
-                />
+                <div style={{ position: "relative" }}>
+                  <textarea
+                    value={checkoutForm.userAddress}
+                    onChange={e => setCheckoutForm(prev => ({ ...prev, userAddress: e.target.value }))}
+                    placeholder="Full delivery address"
+                    required
+                    maxLength={150}
+                    rows={3}
+                    style={{ width: "100%", padding: ".75rem", paddingBottom: "1.5rem", background: "#2c3139", border: "1px solid #2e3440", borderRadius: "8px", color: "white", fontSize: ".9rem", resize: "vertical", boxSizing: "border-box" }}
+                  />
+                  <div style={{ fontSize: "0.75rem", color: "#8a9099", position: "absolute", bottom: "8px", right: "12px" }}>
+                    {checkoutForm.userAddress?.length || 0}/150
+                  </div>
+                </div>
               </div>
 
               {/* Order Summary Preview */}

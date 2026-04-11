@@ -231,6 +231,31 @@
   text-decoration: underline;
 }
 
+.resend-otp-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: transparent;
+  color: #ff9800;
+  border: 2px solid #ff9800;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.resend-otp-btn:hover:not(:disabled) {
+  background: rgba(255, 152, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.resend-otp-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: #d1d5db;
+  color: #9ca3af;
+}
+
 @media (max-width: 480px) {
   .register-page {
     padding: 1rem;

@@ -16,7 +16,7 @@ app.use(express.static("./public"));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: ["http://localhost:5173", "https://shree-krishna-enterprises-pune.onrender.com"],
+  origin: ["http://localhost:5173", "http://localhost:3000", "https://shree-krishna-enterprises-pune.onrender.com"],
   credentials: true
 }));
 

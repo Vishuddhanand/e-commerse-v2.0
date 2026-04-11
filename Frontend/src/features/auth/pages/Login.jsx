@@ -22,7 +22,7 @@ function Login() {
     }
 
     const handleGoogleLogin = () => {
-        window.location.href = "https://shree-krishna-enterprises-pune.onrender.com/api/auth/google";
+        window.location.href = "/api/auth/google";
     };
 
     return (

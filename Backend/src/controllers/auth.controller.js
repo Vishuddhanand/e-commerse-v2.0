@@ -38,6 +38,7 @@ async function registerController(req, res) {
             role: isAdmin ? "admin" : "user"
         })
 
+        // Generate and save OTP
         const otp = generateOtp();
         const html = getOtpHtml(otp);
         const otpHash = crypto.createHash("sha256").update(otp).digest("hex");
@@ -48,10 +49,21 @@ async function registerController(req, res) {
             otpHash
         })
 
-        await sendEmail(email, "OTP Verification", `Your OTP code is ${otp}`, html)
+        // Try to send the OTP email
+        let emailSent = false;
+        try {
+            await sendEmail(email, "OTP Verification", `Your OTP code is ${otp}`, html);
+            emailSent = true;
+        } catch (emailErr) {
+            console.error("Failed to send OTP email during registration:", emailErr.message);
+            // Don't roll back the user — allow them to resend OTP
+        }
 
         res.status(201).json({
-            message: "User registered successfully. Please verify your email via OTP.",
+            message: emailSent
+                ? "Registration successful! Please check your email for the OTP."
+                : "Registration successful! OTP email could not be sent. Please use 'Resend OTP' to try again.",
+            emailSent,
             user: {
                 id: user._id,
                 username: user.username,
@@ -61,6 +73,7 @@ async function registerController(req, res) {
             }
         })
     } catch (err) {
+        console.error("Registration error:", err.message);
         res.status(500).json({
             message: "Registration failed",
             error: err.message
@@ -81,8 +94,10 @@ async function loginController(req, res) {
         }
 
         if (!user.verified) {
-            return res.status(401).json({
-                message: "Email not verified"
+            return res.status(403).json({
+                message: "Email not verified. Please verify your email first.",
+                needsVerification: true,
+                email: user.email
             })
         }
 
@@ -166,7 +181,7 @@ async function googleCallbackController(req, res) {
             httpOnly: true
         });
 
-        res.redirect(`https://shree-krishna-enterprises-pune.onrender.com/auth/success?token=${token}`);
+        res.redirect(`/auth/success?token=${token}`);
 
     } catch (err) {
         res.status(500).json({
@@ -219,7 +234,13 @@ async function verifyOtpController(req, res) {
         const otpRecord = await otpModel.findOne({ email, otpHash });
 
         if (!otpRecord) {
-            return res.status(400).json({ message: "Invalid or expired OTP" });
+            return res.status(400).json({ message: "Invalid or expired OTP. Please request a new one." });
+        }
+
+        // Check if OTP has expired
+        if (otpRecord.expiresAt && otpRecord.expiresAt < new Date()) {
+            await otpModel.deleteMany({ email });
+            return res.status(400).json({ message: "OTP has expired. Please request a new one." });
         }
 
         const user = await userModel.findById(otpRecord.user);
@@ -259,11 +280,60 @@ async function verifyOtpController(req, res) {
     }
 }
 
+async function resendOtpController(req, res) {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({ message: "Email is required" });
+        }
+
+        const user = await userModel.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: "No account found with this email. Please register first." });
+        }
+
+        if (user.verified) {
+            return res.status(400).json({ message: "Email is already verified. Please login." });
+        }
+
+        // Delete any existing OTPs for this email
+        await otpModel.deleteMany({ email });
+
+        // Generate new OTP
+        const otp = generateOtp();
+        const html = getOtpHtml(otp);
+        const otpHash = crypto.createHash("sha256").update(otp).digest("hex");
+
+        await otpModel.create({
+            email,
+            user: user._id,
+            otpHash
+        });
+
+        // Send the OTP email
+        await sendEmail(email, "OTP Verification", `Your OTP code is ${otp}`, html);
+
+        res.status(200).json({
+            message: "OTP has been resent to your email.",
+            emailSent: true
+        });
+    } catch (err) {
+        console.error("Resend OTP error:", err.message);
+        res.status(500).json({
+            message: "Failed to resend OTP. Please try again later.",
+            error: err.message
+        });
+    }
+}
+
 module.exports = {
     registerController,
     loginController,
     googleCallbackController,
     logoutController,
     getMeController,
-    verifyOtpController
+    verifyOtpController,
+    resendOtpController
 }

@@ -225,13 +225,20 @@ Payment: Cash on Delivery`;
                     required
                   />
 
-                  <textarea
-                    name="userAddress"
-                    placeholder="Delivery Address"
-                    value={formData.userAddress}
-                    onChange={handleFormChange}
-                    required
-                  />
+                  <div style={{ position: "relative" }}>
+                    <textarea
+                      name="userAddress"
+                      placeholder="Delivery Address"
+                      value={formData.userAddress}
+                      onChange={handleFormChange}
+                      required
+                      maxLength={150}
+                      style={{ marginBottom: "5px", width: "100%", boxSizing: "border-box" }}
+                    />
+                    <div style={{ fontSize: "0.8rem", color: "#888", textAlign: "right", marginTop: "-4px", marginBottom: "12px", paddingRight: "4px" }}>
+                      {formData.userAddress?.length || 0}/150
+                    </div>
+                  </div>
 
                   <div style={{ display: "flex", gap: "1rem" }}>
                     <button type="submit" className="btn-order-page">

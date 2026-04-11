@@ -4,7 +4,7 @@ import "../styles/register.css";
 import { useAuth } from '../hooks/useAuth';
 
 const Register = () => {
-  const { loading, handleRegister, handleVerifyOtp } = useAuth()
+  const { loading, handleRegister, handleVerifyOtp, handleResendOtp } = useAuth()
   const navigate = useNavigate()
 
   const [username, setUsername] = useState("")
@@ -13,12 +13,14 @@ const Register = () => {
   const [adminKey, setAdminKey] = useState("")
   const [otp, setOtp] = useState("")
   const [isOtpSent, setIsOtpSent] = useState(false)
+  const [resendCooldown, setResendCooldown] = useState(0)
 
   async function handleSubmit(e) {
     e.preventDefault()
     try {
-      await handleRegister({ username, email, password, adminKey })
+      const data = await handleRegister({ username, email, password, adminKey })
       setIsOtpSent(true)
+      startResendCooldown()
     } catch (err) {
       // Error handled in useAuth
     }
@@ -34,8 +36,30 @@ const Register = () => {
     }
   }
 
+  async function handleResend() {
+    try {
+      await handleResendOtp({ email })
+      startResendCooldown()
+    } catch (err) {
+      // Error handled in useAuth
+    }
+  }
+
+  function startResendCooldown() {
+    setResendCooldown(60)
+    const interval = setInterval(() => {
+      setResendCooldown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+  }
+
   const handleGoogleLogin = () => {
-    window.location.href = "https://shree-krishna-enterprises-pune.onrender.com/api/auth/google";
+    window.location.href = "/api/auth/google";
   };
 
   return (
@@ -86,6 +110,14 @@ const Register = () => {
             </div>
             <button type="submit" className="register-btn" disabled={loading}>
               {loading ? "Verifying..." : "Verify OTP"}
+            </button>
+            <button
+              type="button"
+              className="resend-otp-btn"
+              onClick={handleResend}
+              disabled={loading || resendCooldown > 0}
+            >
+              {resendCooldown > 0 ? `Resend OTP in ${resendCooldown}s` : "Resend OTP"}
             </button>
           </form>
         )}

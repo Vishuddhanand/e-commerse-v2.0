@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "https://shree-krishna-enterprises-pune.onrender.com",
+    baseURL: "",
     withCredentials: true
 })
 
@@ -45,6 +45,13 @@ export async function verifyOtp({ email, otp }) {
     const response = await api.post("/api/auth/verify-otp", {
         email,
         otp
+    })
+    return response.data
+}
+
+export async function resendOtp({ email }) {
+    const response = await api.post("/api/auth/resend-otp", {
+        email
     })
     return response.data
 }

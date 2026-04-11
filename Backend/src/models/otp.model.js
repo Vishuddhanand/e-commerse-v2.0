@@ -14,6 +14,11 @@ const otpSchema = new mongoose.Schema({
     otpHash: {
         type: String,
         required: [ true, "OTP hash is required" ]
+    },
+    expiresAt: {
+        type: Date,
+        default: () => new Date(Date.now() + 10 * 60 * 1000), // 10 minutes from now
+        index: { expires: 0 } // TTL index: MongoDB auto-deletes when expiresAt is reached
     }
 }, {
     timestamps: true

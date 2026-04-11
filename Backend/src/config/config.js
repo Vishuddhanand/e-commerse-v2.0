@@ -16,8 +16,9 @@ if (!process.env.GOOGLE_CLIENT_SECRET) {
     throw new Error("GOOGLE_CLIENT_SECRET is not defined in environment variables");
 }
 
-if (!process.env.GOOGLE_REFRESH_TOKEN) {
-    throw new Error("GOOGLE_REFRESH_TOKEN is not defined in environment variables");
+// GOOGLE_REFRESH_TOKEN is only required if GOOGLE_APP_PASSWORD is not set
+if (!process.env.GOOGLE_APP_PASSWORD && !process.env.GOOGLE_REFRESH_TOKEN) {
+    throw new Error("Either GOOGLE_APP_PASSWORD or GOOGLE_REFRESH_TOKEN must be defined in environment variables");
 }
 
 if (!process.env.GOOGLE_USER) {
@@ -34,6 +35,7 @@ const config = {
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     GOOGLE_REFRESH_TOKEN: process.env.GOOGLE_REFRESH_TOKEN,
+    GOOGLE_APP_PASSWORD: process.env.GOOGLE_APP_PASSWORD,
     GOOGLE_USER: process.env.GOOGLE_USER,
     ADMIN_SECRET_KEY: process.env.ADMIN_SECRET_KEY
 }

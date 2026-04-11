@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "https://shree-krishna-enterprises-pune.onrender.com",
+    baseURL: "",
     withCredentials: true
 })
 

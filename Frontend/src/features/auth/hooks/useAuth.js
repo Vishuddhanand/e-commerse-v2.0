@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../auth.context";
-import { login, register, getMe, logout, verifyOtp } from "../services/auth.api";
+import { login, register, getMe, logout, verifyOtp, resendOtp } from "../services/auth.api";
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 
@@ -13,9 +13,11 @@ export const useAuth = () => {
         try {
             const data = await register({ username, email, password, adminKey })
             // Don't set user and token immediately since OTP verification is required
-            // setUser(data.user)
-            // if (data.token) localStorage.setItem("token", data.token)
-            toast.success(data.message || "Account created successfully! Please verify OTP.")
+            if (data.emailSent) {
+                toast.success("Account created! Please check your email for the OTP.")
+            } else {
+                toast.success("Account created! Tap 'Resend OTP' to get your verification code.")
+            }
             return data
         } catch (err) {
             const errorData = err.response?.data;
@@ -65,20 +67,36 @@ export const useAuth = () => {
         }
     }
 
-async function handleGetMe() {
-    setLoading(true)
-    try {
-        const data = await getMe()
-        setUser(data.user)
-        return data        
-    } catch (err) {
-        setUser(null)
-        localStorage.removeItem("token")
-        throw err          
-    } finally {
-        setLoading(false)
+    async function handleResendOtp({ email }) {
+        setLoading(true)
+        try {
+            const data = await resendOtp({ email })
+            toast.success(data.message || "OTP resent successfully!")
+            return data
+        } catch (err) {
+            const errorData = err.response?.data;
+            const message = errorData?.message || "Failed to resend OTP";
+            toast.error(message)
+            throw err
+        } finally {
+            setLoading(false)
+        }
     }
-}
+
+    async function handleGetMe() {
+        setLoading(true)
+        try {
+            const data = await getMe()
+            setUser(data.user)
+            return data        
+        } catch (err) {
+            // 401 is expected when user is not logged in — don't treat it as a fatal error
+            setUser(null)
+            localStorage.removeItem("token")
+        } finally {
+            setLoading(false)
+        }
+    }
 
     async function handleLogout() {
         setLoading(true)
@@ -95,11 +113,11 @@ async function handleGetMe() {
     }
 
     useEffect(() => {
-        handleGetMe()
+        handleGetMe().catch(() => {})
     }, [])
 
     return ({
-        user, loading, handleRegister, handleVerifyOtp, handleLogin, handleGetMe, handleLogout
+        user, loading, handleRegister, handleVerifyOtp, handleResendOtp, handleLogin, handleGetMe, handleLogout
     })
 }
 

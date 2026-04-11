@@ -39,5 +39,6 @@ authRouter.get(
 authRouter.post("/logout", authController.logoutController)
 
 authRouter.post("/verify-otp", authController.verifyOtpController)
+authRouter.post("/resend-otp", authController.resendOtpController)
 
 module.exports = authRouter;
