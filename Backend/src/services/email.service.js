@@ -1,5 +1,9 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
+const dns = require('dns');
+
+// Force IPv4 resolution first to prevent ENETUNREACH errors on Render/IPv6 networks
+dns.setDefaultResultOrder('ipv4first');
 
 let transporter;
 
