@@ -10,12 +10,13 @@ const cartRouter = require("./routes/cart.routes");
 const orderRouter = require("./routes/order.routes");
 
 const app = express();
+app.enable('trust proxy');
 app.use(express.static("./public"));
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173", "https://shree-krishna-enterprises-pune.onrender.com"],
   credentials: true
 }));
 
