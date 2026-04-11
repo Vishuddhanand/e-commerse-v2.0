@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getOrderHistory } from '../services/order.api';
+import { generateInvoice } from '../services/invoice.service';
 import { toast } from 'react-hot-toast';
 import Navbar from '../../home/components/Navbar';
 import '../styles/order-history.css';
@@ -89,6 +90,13 @@ const OrderHistory = () => {
                           <span className="label">Total:</span>
                           <span className="value">₹{order.totalAmount.toFixed(2)}</span>
                         </div>
+                        <button 
+                          onClick={() => generateInvoice(order)}
+                          style={{ marginLeft: "auto", padding: "6px 12px", background: "#ff9800", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "0.4rem" }}
+                        >
+                          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                          Invoice
+                        </button>
                       </div>
                     </div>
                   </div>

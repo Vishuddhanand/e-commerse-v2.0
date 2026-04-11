@@ -9,7 +9,7 @@ import Profile from './features/auth/pages/Profile';
 import AuthSuccess from './features/auth/pages/AuthSuccess';
 import OrderHistory from './features/order/pages/OrderHistory';
 import Admin from './features/admin/pages/Admin';
-
+import AllProducts from './features/allProducts/pages/AllProducts';
 
 function AppRoutes() {
     return (
@@ -19,6 +19,7 @@ function AppRoutes() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/cart" element={<Cart />} />
+                <Route path="/products" element={<AllProducts />} />
                 <Route path="/order" element={<Order />} />
                 <Route path="/category/:categoryName" element={<Category />} />
                 <Route path="/profile" element={<Profile />} />

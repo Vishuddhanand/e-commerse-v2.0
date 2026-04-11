@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { addToCart } from '../../cart/services/cart.api';
 import { createOrder } from '../../order/services/order.api';
+import { generateInvoice } from '../services/invoice.service';
 import '../styles/order.css';
 import products from '../../../data/product';
 import { useAuth } from '../../auth/hooks/useAuth';
@@ -119,14 +120,28 @@ Quantity: ${quantity}
 Total: ₹${total}
 Payment: Cash on Delivery`;
 
-    const ownerNumber = "919637401456";
+    const ownerNumber = "918149111602";
     const whatsappUrl = `https://wa.me/${ownerNumber}?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, "_blank");
 
     setTimeout(() => {
       setFormVisible(false);
-      setThankYouVisible(true);
+      setThankYouVisible({
+        _id: Date.now().toString(),
+        userName: userName,
+        userPhone: userPhone,
+        userAddress: userAddress,
+        createdAt: new Date().toISOString(),
+        status: "Pending",
+        totalAmount: total,
+        products: [{
+          name: productInfo.name,
+          price: productInfo.price,
+          quantity: quantity,
+          total: total
+        }]
+      });
     }, 500);
   };
 
@@ -244,16 +259,28 @@ Payment: Cash on Delivery`;
 
             {/* THANK YOU */}
             {thankYouVisible && (
-              <div className="thankyou-msg">
-                <h3>✅ Order Placed Successfully!</h3>
-                <p>We will contact you on WhatsApp soon.</p>
-                <button
-                  className="btn-order-page"
-                  style={{ marginTop: "1rem" }}
-                  onClick={() => navigate("/")}
-                >
-                  Back to Home
-                </button>
+              <div className="thankyou-msg" style={{ textAlign: "center" }}>
+                <h3 style={{ marginBottom: "10px", color: "#4caf50" }}>✅ Order Placed Successfully!</h3>
+                <p style={{ color: "#374151", fontSize: "1.05rem", lineHeight: "1.6", marginTop: "15px", fontWeight: "500" }}>
+                  We will reach out to you on WhatsApp shortly.<br/>
+                  Your order confirmation and future updates will be sent there.
+                </p>
+                <div style={{ display: "flex", gap: "1rem", marginTop: "1.5rem", justifyContent: "center" }}>
+                  <button
+                    className="btn-order-page"
+                    style={{ margin: 0, padding: "0.7rem 1.5rem", borderRadius: "8px" }}
+                    onClick={() => navigate("/")}
+                  >
+                    Back to Home
+                  </button>
+                  <button
+                    className="btn-order-page"
+                    style={{ margin: 0, padding: "0.7rem 1.5rem", background: "#ff9800", color: "#fff", borderRadius: "8px" }}
+                    onClick={() => generateInvoice(thankYouVisible)}
+                  >
+                    📄 Download Invoice
+                  </button>
+                </div>
               </div>
             )}
 

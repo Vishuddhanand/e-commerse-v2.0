@@ -64,7 +64,7 @@ const Navbar = () => {
         {/* Desktop nav links */}
         <div className="nav-middle">
           <span className="nav-link" onClick={() => scrollToSection('home')}>{t('navbar.home')}</span>
-          <span className="nav-link" onClick={() => scrollToSection('products')}>{t('navbar.products')}</span>
+          <Link to="/products" className="nav-link" onClick={closeMenu}>{t('navbar.products')}</Link>
           <span className="nav-link" onClick={() => scrollToSection('categories')}>{t('navbar.categories')}</span>
           <span className="nav-link" onClick={() => scrollToSection('about')}>{t('navbar.about')}</span>
           <span className="nav-link" onClick={() => scrollToSection('footer')}>{t('navbar.contact')}</span>
@@ -131,7 +131,7 @@ const Navbar = () => {
         {/* Mobile nav links */}
         <div className="mobile-nav-links">
           <span className="mobile-link" onClick={() => scrollToSection('home')}>{t('navbar.home')}</span>
-          <span className="mobile-link" onClick={() => scrollToSection('products')}>{t('navbar.products')}</span>
+          <Link to="/products" className="mobile-link" onClick={closeMenu}>{t('navbar.products')}</Link>
           <span className="mobile-link" onClick={() => scrollToSection('categories')}>{t('navbar.categories')}</span>
           <span className="mobile-link" onClick={() => scrollToSection('about')}>{t('navbar.about')}</span>
           <span className="mobile-link" onClick={() => scrollToSection('footer')}>{t('navbar.contact')}</span>
