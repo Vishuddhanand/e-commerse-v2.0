@@ -68,7 +68,7 @@ const Products = () => {
                     <span className="price">₹90 per item</span>
                 </Link>
 
-                <Link to="/order?product=brek-liver-hero-honda" className="product-card">
+                <Link to="/order?product=brake-liver-hero-honda" className="product-card">
                     <div className="product-img">
                         <img src="/assets/Brake liver hero honda.webp" alt="" />
                     </div>
@@ -77,7 +77,7 @@ const Products = () => {
                     <span className="price">₹35 per item</span>
                 </Link>
 
-                <Link to="/order?product=break-pad-pulsur" className="product-card">
+                <Link to="/order?product=brake-pad-pulsur" className="product-card">
                     <div className="product-img">
                         <img src="/assets/Brake Pad Pulsur.webp" alt="" />
                     </div>
