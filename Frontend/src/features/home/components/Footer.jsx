@@ -42,8 +42,8 @@ const Footer = () => {
                     <h4>{t('footer.contactUs')}</h4>
                     <div className="contact-details">
                         <p><strong>Mr. Parth Bhojane</strong></p>
-                        <p><span>{t('footer.phone')}:</span> +91 9112162207</p>
-                        <p><span>{t('footer.email')}:</span> parthbhojane@gmail.com</p>
+                        <p><span>{t('footer.phone')}:</span> +91 8149111602</p>
+                        <p><span>{t('footer.email')}:</span> parthbhojane1602@gmail.com</p>
                     </div>
                 </div>
                 

@@ -166,7 +166,7 @@ async function googleCallbackController(req, res) {
             httpOnly: true
         });
 
-        res.redirect(`http://localhost:3000/auth/success?token=${token}`);
+        res.redirect(`https://shree-krishna-enterprises-pune.onrender.com/auth/success?token=${token}`);
 
     } catch (err) {
         res.status(500).json({
