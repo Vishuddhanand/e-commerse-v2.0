@@ -36,11 +36,11 @@ if (config.GOOGLE_APP_PASSWORD) {
 // Verify the connection configuration
 transporter.verify((error, success) => {
     if (error) {
-        console.error('❌ Email server connection FAILED:', error.message);
+        console.error('Email server connection FAILED:', error.message);
         console.error('   → If using OAuth2, your refresh token may have expired.');
         console.error('   → Consider using a Gmail App Password instead (set GOOGLE_APP_PASSWORD in .env).');
     } else {
-        console.log('✅ Email server is ready to send messages');
+        console.log('Email server is ready to send messages');
     }
 });
 
@@ -55,10 +55,10 @@ const sendEmail = async (to, subject, text, html) => {
             html,
         });
 
-        console.log('✅ Email sent successfully. Message ID:', info.messageId);
+        console.log(' Email sent successfully. Message ID:', info.messageId);
         return info;
     } catch (error) {
-        console.error('❌ Error sending email to', to, ':', error.message);
+        console.error(' Error sending email to', to, ':', error.message);
         if (error.message.includes('invalid_grant') || error.message.includes('Invalid credentials')) {
             console.error('   → OAuth2 refresh token has expired. Please generate a new one or use Gmail App Password.');
         }
