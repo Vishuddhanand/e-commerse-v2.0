@@ -16,9 +16,9 @@ if (!process.env.GOOGLE_CLIENT_SECRET) {
     throw new Error("GOOGLE_CLIENT_SECRET is not defined in environment variables");
 }
 
-// GOOGLE_REFRESH_TOKEN is only required if GOOGLE_APP_PASSWORD is not set
-if (!process.env.GOOGLE_APP_PASSWORD && !process.env.GOOGLE_REFRESH_TOKEN) {
-    throw new Error("Either GOOGLE_APP_PASSWORD or GOOGLE_REFRESH_TOKEN must be defined in environment variables");
+// At least one email sending method must be configured
+if (!process.env.BREVO_API_KEY && !process.env.GOOGLE_APP_PASSWORD && !process.env.GOOGLE_REFRESH_TOKEN) {
+    throw new Error("At least one email method must be configured: BREVO_API_KEY, GOOGLE_APP_PASSWORD, or GOOGLE_REFRESH_TOKEN");
 }
 
 if (!process.env.GOOGLE_USER) {
@@ -37,7 +37,9 @@ const config = {
     GOOGLE_REFRESH_TOKEN: process.env.GOOGLE_REFRESH_TOKEN,
     GOOGLE_APP_PASSWORD: process.env.GOOGLE_APP_PASSWORD,
     GOOGLE_USER: process.env.GOOGLE_USER,
-    ADMIN_SECRET_KEY: process.env.ADMIN_SECRET_KEY
+    ADMIN_SECRET_KEY: process.env.ADMIN_SECRET_KEY,
+    BREVO_API_KEY: process.env.BREVO_API_KEY,
+    BREVO_SENDER: process.env.BREVO_SENDER
 }
 
 module.exports = config;

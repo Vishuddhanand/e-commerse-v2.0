@@ -178,7 +178,20 @@ Payment: Cash on Delivery`;
                         type="number"
                         min="1"
                         value={quantity}
-                        onChange={(e) => setQuantity(Number(e.target.value))}
+                        onChange={(e) => {
+                          const raw = e.target.value;
+                          if (raw === '') {
+                            setQuantity('');
+                          } else {
+                            const parsed = parseInt(raw, 10);
+                            if (!isNaN(parsed) && parsed >= 0) {
+                              setQuantity(parsed);
+                            }
+                          }
+                        }}
+                        onBlur={() => {
+                          if (quantity === '' || quantity < 1) setQuantity(1);
+                        }}
                       />
                     </div>
 
