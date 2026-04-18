@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../auth.context";
 import { login, register, getMe, logout, verifyOtp, resendOtp } from "../services/auth.api";
-import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 
 export const useAuth = () => {
@@ -111,10 +110,6 @@ export const useAuth = () => {
             setLoading(false)
         }
     }
-
-    useEffect(() => {
-        handleGetMe().catch(() => {})
-    }, [])
 
     return ({
         user, loading, handleRegister, handleVerifyOtp, handleResendOtp, handleLogin, handleGetMe, handleLogout
